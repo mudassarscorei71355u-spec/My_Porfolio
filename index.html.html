@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Mudassar Hussain | Software Engineer Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="nav">
+        <div class="logo">Mudassar.dev</div>
+        <ul class="nav-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section / Home -->
+    <section id="home" class="section" style="padding-top: 40px;">
+      <div class="container">
+        <div class="hero">
+          <div class="hero-content">
+            <div class="hero-badge"><i class="fas fa-code"></i> Software Engineering Student</div>
+            <h1>Mudassar Hussain</h1>
+            <p style="font-size: 1.25rem; font-weight: 500;">Passionate Full-Stack Developer & Problem Solver</p>
+            <p>Building impactful apps with clean code, modern stacks, and database mastery. Currently pursuing Bachelor's in Software Engineering at UET Taxila. Eager to craft robust backend systems and elegant frontend experiences.</p>
+            <div class="btn-group">
+              <a href="#projects" class="btn btn-primary"><i class="fas fa-folder-open"></i> View Projects</a>
+              <a href="#contact" class="btn btn-outline"><i class="fas fa-paper-plane"></i> Contact Me</a>
+              <a href="https://github.com/mudassarscorei71355u-spec" target="_blank" class="btn btn-outline"><i class="fab fa-github"></i> GitHub</a>
+            </div>
+          </div>
+          <div class="hero-avatar">
+            <div class="avatar-circle">
+              <i class="fas fa-user-astronaut"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section">
+      <div class="container">
+        <h2><i class="fas fa-laptop-code" style="margin-right: 12px;"></i> Featured Projects</h2>
+        <div class="projects-grid" id="projectsContainer"></div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="section">
+      <div class="container">
+        <h2><i class="fas fa-cogs"></i> Technical Arsenal</h2>
+        <div class="skills-grid" id="skillsList"></div>
+        <div style="margin-top: 2rem;">
+          <h3 style="margin-bottom: 0.8rem;">Languages & Tools</h3>
+          <div class="skills-grid" id="extraTools"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Profile & Education Brief -->
+    <section class="section" style="padding-top: 0;">
+      <div class="container">
+        <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: space-between;">
+          <div style="flex:1; background: white; border-radius: 24px; padding: 1.8rem; border:1px solid #eef2ff;">
+            <i class="fas fa-graduation-cap" style="font-size: 2rem; color:#2563eb;"></i>
+            <h3 style="margin: 0.8rem 0 0.5rem;">Education</h3>
+            <p><strong>Bachelor's in Software Engineering</strong><br>UET Taxila | Aug 2024 – Present <br><span style="color:#475569;">Relevant: Data Structures, OOP, DBMS, Web Dev</span></p>
+          </div>
+          <div style="flex:1; background: white; border-radius: 24px; padding: 1.8rem; border:1px solid #eef2ff;">
+            <i class="fas fa-terminal" style="font-size: 2rem; color:#2563eb;"></i>
+            <h3 style="margin: 0.8rem 0 0.5rem;">Profile</h3>
+            <p>Motivated Software Engineering student with strong foundations in programming, databases, and full-stack development. Experienced in Java, C++, Python, Next.js, Node.js, PostgreSQL. Passionate about clean architecture and solving real-world problems.</p>
+          </div>
+          <div style="flex:1; background: white; border-radius: 24px; padding: 1.8rem; border:1px solid #eef2ff;">
+            <i class="fas fa-heart" style="font-size: 2rem; color:#2563eb;"></i>
+            <h3 style="margin: 0.8rem 0 0.5rem;">Beyond Code</h3>
+            <p>Cricket enthusiast, creative gaming, building side projects. Love exploring new tech and collaborating on open-source.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+      <div class="container">
+        <h2><i class="fas fa-address-card"></i> Get In Touch</h2>
+        <div class="contact-info">
+          <div class="contact-item"><i class="fas fa-phone-alt"></i> <span>0328-5549673</span></div>
+          <div class="contact-item"><i class="fas fa-envelope"></i> <span>mudssars.core.i7.1355u@gmail.com</span></div>
+          <div class="contact-item"><i class="fas fa-map-marker-alt"></i> <span>VPO Miani, Tehsil Kallar Kahar, District Chakwal</span></div>
+          <div class="contact-item"><i class="fab fa-github"></i> <span><a href="https://github.com/mudassarscorei71355u-spec" target="_blank" style="text-decoration: none;">github.com/mudassarscorei71355u-spec</a></span></div>
+        </div>
+        <div class="social-links">
+          <a href="#" id="copyPhoneBtn" aria-label="Phone"><i class="fas fa-phone"></i></a>
+          <a href="#" id="mailLink" aria-label="Email"><i class="fas fa-envelope"></i></a>
+          <a href="https://github.com/mudassarscorei71355u-spec" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <p>© 2025 Mudassar Hussain — Crafted with <i class="fas fa-coffee"></i> & modern web stack</p>
+    <p style="font-size: 0.8rem;">Built with HTML/CSS/JS — Portfolio showcasing engineering journey</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
