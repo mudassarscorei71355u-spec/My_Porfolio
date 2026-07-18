@@ -581,50 +581,70 @@ function updateCVContent() {
 function setupDownloadCV() {
     const downloadBtn = document.getElementById('downloadCVBtn');
     if (!downloadBtn) return;
-    
-    // Check if html2pdf is available
+
+    // ------------------------------------------------------------------
+    // WHAT WAS STILL WRONG
+    // ------------------------------------------------------------------
+    // html2pdf's automatic pagination takes ONE tall screenshot of the
+    // whole CV and slices it into page-height chunks by raw pixel row.
+    // It has no idea that .cv-body-grid is two side-by-side columns. If
+    // column 2 (Projects) renders taller than column 1 (Education/
+    // Skills) — which varies by device/font metrics, hence "only on
+    // mobile" — the slice line lands in the MIDDLE of column 2. Page 2
+    // then shows just the tail end of column 2 with nothing next to it,
+    // which is the "column 2 shifted" symptom. And because that leftover
+    // fragment doesn't span the full width the way a normal full row
+    // does, it also reads as "not centered."
+    //
+    // FIX: stop slicing a single flat image at all. Capture each logical
+    // page (1: header+summary+education+skills+projects,
+    // 2: Learning Highlights) as its OWN complete image, shrink each one
+    // (if needed) so it always fits within one page's height without
+    // ever cutting through a column, then place each image on its own
+    // PDF page with manually computed, guaranteed-centered coordinates.
+    //
+    // NOTE: earlier versions of this function required separate global
+    // `html2canvas` / `window.jspdf` objects. Not every html2pdf CDN
+    // build exposes those (yours doesn't, which is why the button was
+    // greyed out). This version only needs `html2pdf` itself — it gets
+    // the canvas and jsPDF instance through html2pdf's own worker API
+    // (`.toCanvas()`, `.toPdf()`, `.get('pdf')`), which is always
+    // available since html2pdf bundles both internally regardless of
+    // whether it re-exports them as separate globals.
+    // ------------------------------------------------------------------
+
     if (typeof html2pdf === 'undefined') {
         downloadBtn.style.opacity = '0.5';
         downloadBtn.title = 'html2pdf library not loaded';
         return;
     }
 
-    downloadBtn.addEventListener('click', function() {
-        const element = document.getElementById('cvContent');
-        if (!element) return;
-
-        downloadBtn.disabled = true;
-        downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
-
-        if (!document.body.classList.contains('dark')) {
-            document.body.classList.add('dark');
-            localStorage.setItem('theme', 'dark');
-            updateThemeIcon(true);
-        }
-
-        // Clone the CV element
-        const clone = element.cloneNode(true);
-        clone.id = 'cvExportClone';
-        
-        // Create comprehensive export styles
-        const exportStyleElement = document.createElement('style');
-        exportStyleElement.textContent = `
-            #cvExportClone {
-                width: 100%;
-                max-width: 100%;
-                margin: 0;
+    const EXPORT_STYLE_ID = 'cv-export-style';
+    if (!document.getElementById(EXPORT_STYLE_ID)) {
+        const styleEl = document.createElement('style');
+        styleEl.id = EXPORT_STYLE_ID;
+        styleEl.textContent = `
+            /* No zoom/scale hacks here anymore — see note below on why. */
+            body.cv-export-mode #cvContent {
+                width: 794px !important;
+                max-width: 794px !important;
+                margin: 0 !important;
                 padding: 16px;
                 background: #0f172a;
                 color: #f1f5f9;
                 font-family: Inter, Arial, sans-serif;
                 line-height: 1.2;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
             }
-            #cvExportClone * {
-                margin: 0;
-                padding: 0;
+            body.cv-export-mode #cvContent * {
                 box-sizing: border-box;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
             }
-            #cvExportClone .cv-container {
+            body.cv-export-mode #cvContent .cv-container {
                 width: 100%;
                 background: #1e293b;
                 color: #f1f5f9;
@@ -633,40 +653,37 @@ function setupDownloadCV() {
                 padding: 18px;
                 box-shadow: none;
             }
-            #cvExportClone .cv-header {
+            body.cv-export-mode #cvContent .cv-header {
                 text-align: center;
                 border-bottom: 2px solid #60a5fa;
                 margin-bottom: 12px;
                 padding-bottom: 10px;
             }
-            #cvExportClone .cv-header-info {
-                margin: 0;
-            }
-            #cvExportClone .avatar-circle {
+            body.cv-export-mode #cvContent .avatar-circle {
                 width: 90px !important;
                 height: 90px !important;
                 margin: 0 auto 6px !important;
                 border-radius: 50%;
                 overflow: hidden;
             }
-            #cvExportClone .avatar-circle img {
+            body.cv-export-mode #cvContent .avatar-circle img {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
             }
-            #cvExportClone .cv-name {
+            body.cv-export-mode #cvContent .cv-name {
                 font-size: 1.2rem;
                 font-weight: 700;
                 margin-bottom: 2px;
                 color: #f1f5f9;
             }
-            #cvExportClone .cv-title {
+            body.cv-export-mode #cvContent .cv-title {
                 font-size: 0.8rem;
                 margin-bottom: 6px;
                 color: #60a5fa;
                 font-weight: 500;
             }
-            #cvExportClone .cv-contact-info {
+            body.cv-export-mode #cvContent .cv-contact-info {
                 display: flex;
                 flex-wrap: wrap;
                 justify-content: center;
@@ -675,38 +692,36 @@ function setupDownloadCV() {
                 color: #94a3b8;
                 line-height: 1.2;
             }
-            #cvExportClone .cv-body-grid {
-                display: flex;
+            body.cv-export-mode #cvContent .cv-body-grid {
+                display: flex !important;
+                flex-direction: row !important;
+                flex-wrap: nowrap !important;
                 gap: 16px;
                 align-items: flex-start;
                 width: 100%;
-                flex-wrap: nowrap;
             }
-            #cvExportClone .cv-column {
-                width: 50%;
+            body.cv-export-mode #cvContent .cv-column {
+                width: 50% !important;
+                flex: 0 0 50% !important;
+                max-width: 50% !important;
                 display: flex;
                 flex-direction: column;
-                gap: 0;
                 min-width: 0;
             }
-            #cvExportClone .cv-summary-block {
+            body.cv-export-mode #cvContent .cv-summary-block {
                 width: 100%;
                 margin-bottom: 10px;
-                page-break-inside: avoid;
-                break-inside: avoid;
             }
-            #cvExportClone .cv-summary-block p {
+            body.cv-export-mode #cvContent .cv-summary-block p {
                 margin: 0;
                 font-size: 0.7rem;
                 line-height: 1.3;
                 color: #cbd5e1;
             }
-            #cvExportClone .cv-section-block {
+            body.cv-export-mode #cvContent .cv-section-block {
                 margin-bottom: 12px;
-                page-break-inside: avoid;
-                break-inside: avoid;
             }
-            #cvExportClone .cv-section-block h3 {
+            body.cv-export-mode #cvContent .cv-section-block h3 {
                 font-size: 0.85rem;
                 margin: 0 0 6px 0;
                 padding-bottom: 3px;
@@ -714,39 +729,37 @@ function setupDownloadCV() {
                 color: #60a5fa;
                 font-weight: 600;
             }
-            #cvExportClone .cv-item {
+            body.cv-export-mode #cvContent .cv-item {
                 margin-bottom: 8px;
-                page-break-inside: avoid;
-                break-inside: avoid;
             }
-            #cvExportClone .cv-item-header {
+            body.cv-export-mode #cvContent .cv-item-header {
                 display: flex;
                 justify-content: space-between;
                 flex-wrap: wrap;
                 gap: 4px;
                 margin-bottom: 1px;
             }
-            #cvExportClone .cv-item-title {
+            body.cv-export-mode #cvContent .cv-item-title {
                 font-weight: 600;
                 font-size: 0.75rem;
                 color: #f1f5f9;
             }
-            #cvExportClone .cv-item-date {
+            body.cv-export-mode #cvContent .cv-item-date {
                 font-size: 0.65rem;
                 color: #60a5fa;
             }
-            #cvExportClone .cv-item-subtitle {
+            body.cv-export-mode #cvContent .cv-item-subtitle {
                 font-size: 0.7rem;
                 color: #cbd5e1;
                 margin-top: 1px;
             }
-            #cvExportClone .cv-item p {
+            body.cv-export-mode #cvContent .cv-item p {
                 margin: 2px 0 0 0;
                 font-size: 0.65rem;
                 color: #94a3b8;
                 line-height: 1.2;
             }
-            #cvExportClone .cv-tech-tags {
+            body.cv-export-mode #cvContent .cv-tech-tags {
                 margin-top: 3px;
                 background: #1e3a5f;
                 padding: 2px 6px;
@@ -759,61 +772,53 @@ function setupDownloadCV() {
                 gap: 3px;
                 border: 1px solid #334155;
             }
-            #cvExportClone .skills-grid-cv {
+            body.cv-export-mode #cvContent .skills-grid-cv {
                 display: grid;
                 grid-template-columns: 1fr;
                 gap: 4px;
             }
-            #cvExportClone .skill-group {
+            body.cv-export-mode #cvContent .skill-group {
                 padding: 3px 0;
                 border-bottom: 1px solid #334155;
                 color: #cbd5e1;
                 font-size: 0.7rem;
                 line-height: 1.2;
             }
-            #cvExportClone .cv-projects-grid {
+            body.cv-export-mode #cvContent .cv-projects-grid {
                 display: grid;
                 grid-template-columns: 1fr;
                 gap: 6px;
-                page-break-inside: avoid;
-                break-inside: avoid;
             }
-            #cvExportClone .cv-projects-grid .cv-item {
+            body.cv-export-mode #cvContent .cv-projects-grid .cv-item {
                 padding: 6px;
                 background: #0f172a;
                 border-radius: 6px;
                 border: 1px solid #334155;
                 margin-bottom: 0;
-                page-break-inside: avoid;
-                break-inside: avoid;
             }
-            #cvExportClone .cv-projects-grid .cv-item p {
+            body.cv-export-mode #cvContent .cv-projects-grid .cv-item p {
                 display: -webkit-box;
                 -webkit-line-clamp: 2;
                 -webkit-box-orient: vertical;
                 overflow: hidden;
                 font-size: 0.6rem;
             }
-            #cvExportClone .cv-learnings-grid {
+            body.cv-export-mode #cvContent .cv-learnings-grid {
                 display: grid;
                 grid-template-columns: 1fr;
                 gap: 4px;
-                page-break-inside: avoid;
-                break-inside: avoid;
             }
-            #cvExportClone .certifications-list {
+            body.cv-export-mode #cvContent .certifications-list {
                 display: flex;
                 flex-direction: column;
                 gap: 4px;
             }
-            #cvExportClone .cv-learning-group {
+            body.cv-export-mode #cvContent .cv-learning-group {
                 margin-bottom: 6px;
                 font-size: 0.7rem;
                 color: #cbd5e1;
-                page-break-inside: avoid;
-                break-inside: avoid;
             }
-            #cvExportClone .cv-learning-tag {
+            body.cv-export-mode #cvContent .cv-learning-tag {
                 display: inline-block;
                 background: #1e3a5f;
                 color: #60a5fa;
@@ -824,89 +829,207 @@ function setupDownloadCV() {
                 margin-bottom: 2px;
                 border: 1px solid #334155;
             }
-            #cvExportClone .cv-two-columns {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
+            body.cv-export-mode #cvContent .cv-two-columns {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
                 gap: 10px;
             }
-            #cvExportClone .cv-two-columns ul {
+            body.cv-export-mode #cvContent .cv-two-columns ul {
                 padding-left: 16px;
                 margin-top: 3px;
                 color: #cbd5e1;
                 font-size: 0.7rem;
             }
-            #cvExportClone .cv-two-columns li {
+            body.cv-export-mode #cvContent .cv-two-columns li {
                 margin-bottom: 2px;
             }
-            #cvExportClone .page-break {
-                page-break-before: always;
-                break-before: page;
+            body.cv-export-mode {
+                overflow: hidden;
             }
-            #cvExportClone .cv-learning-section-wrapper {
-                page-break-inside: avoid;
-                break-inside: avoid;
+            body.cv-export-mode #cvContent {
+                position: relative;
+                z-index: 2147483647;
             }
         `;
-        
-        document.head.appendChild(exportStyleElement);
-        document.body.appendChild(clone);
+        document.head.appendChild(styleEl);
+    }
 
-        // Wait for rendering, then export
-        setTimeout(function() {
-            html2pdf().set({
-                margin: [5, 5, 5, 5],
-                filename: 'Mudassar_Hussain_CV.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: {
-                    scale: 3,
-                    useCORS: true,
-                    allowTaint: true,
-                    backgroundColor: '#0f172a'
-                },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak: { mode: ['css', 'legacy'] }
-            }).from(clone).save().then(function() {
-                downloadBtn.disabled = false;
-                downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
-                document.body.removeChild(clone);
-                document.head.removeChild(exportStyleElement);
-                showToastManager('✅ CV downloaded!');
-            }).catch(function(err) {
-                console.error('PDF generation error:', err);
-                downloadBtn.disabled = false;
-                downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
-                if (document.body.contains(clone)) {
-                    document.body.removeChild(clone);
-                }
-                document.head.removeChild(exportStyleElement);
-                showToastManager('❌ PDF generation failed');
+    // A4 page geometry in mm, and the px<->mm relationship implied by
+    // the 794px export width (794px was chosen because at 96dpi that's
+    // exactly the width of an A4 page: 210mm * 96/25.4 ≈ 794px).
+    const PAGE_W_MM = 210;
+    const PAGE_H_MM = 297;
+    const MARGIN_MM = 5;
+
+    function nextFrame() {
+        return new Promise(function(resolve) {
+            requestAnimationFrame(function() {
+                requestAnimationFrame(resolve);
             });
-        }, 200);
+        });
+    }
+
+    // Captures `el` via html2pdf's own worker chain and returns the
+    // resulting canvas. Using html2pdf().toCanvas() instead of calling
+    // html2canvas directly means we only ever depend on the one library
+    // that's confirmed to be loaded.
+    async function captureElement(el) {
+        // Force a synchronous reflow so any pending layout changes (like
+        // the cv-export-mode width override, or a display toggle on a
+        // sibling) are fully applied before html2canvas reads geometry.
+        void el.offsetHeight;
+        await nextFrame();
+
+        // No explicit width/height/windowWidth here: #cvContent is
+        // already fixed at 794px on the real DOM (via cv-export-mode),
+        // so html2canvas measures it correctly on its own. Passing a
+        // separately-measured rect risked a stale/early reading, which
+        // is what was causing the cropped/cut-off capture.
+        const canvas = await html2pdf().set({
+            html2canvas: {
+                scale: 3,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: '#0f172a',
+                logging: false,
+                scrollX: 0,
+                scrollY: 0
+            }
+        }).from(el).toCanvas().get('canvas');
+        return canvas;
+    }
+
+    // Paints `canvas` onto the CURRENT page of `pdf`, centered both
+    // horizontally and vertically within the printable area. Filling the
+    // printable width exactly and computing x from that width is what
+    // guarantees true centering — no reliance on html2pdf's internal
+    // placement. A solid background rect is painted first so nothing
+    // html2pdf may have already drawn on this page shows through.
+    function paintCanvasOnCurrentPage(pdf, canvas) {
+        pdf.setFillColor(15, 23, 42); // #0f172a
+        pdf.rect(0, 0, PAGE_W_MM, PAGE_H_MM, 'F');
+
+        const availableWMM = PAGE_W_MM - 2 * MARGIN_MM;
+        const availableHMM = PAGE_H_MM - 2 * MARGIN_MM;
+
+        // True "contain" fit: scale the image down by whichever axis
+        // needs it more, preserving aspect ratio (no distortion, no
+        // cropping), then center it on both axes. If the content is
+        // short, this fills full width (the common case). If a section
+        // is unusually tall, this shrinks it uniformly instead of
+        // letting it get cut or squashed.
+        const naturalWMM = availableWMM;
+        const naturalHMM = naturalWMM * (canvas.height / canvas.width);
+        const scale = Math.min(1, availableHMM / naturalHMM);
+
+        const imgWMM = naturalWMM * scale;
+        const imgHMM = naturalHMM * scale;
+
+        const x = MARGIN_MM + (availableWMM - imgWMM) / 2;
+        const y = MARGIN_MM + (availableHMM - imgHMM) / 2;
+
+        const imgData = canvas.toDataURL('image/jpeg', 0.98);
+        pdf.addImage(imgData, 'JPEG', x, y, imgWMM, imgHMM);
+    }
+
+    downloadBtn.addEventListener('click', async function() {
+        const cvContent = document.getElementById('cvContent');
+        if (!cvContent) return;
+
+        downloadBtn.disabled = true;
+        downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+
+        if (!document.body.classList.contains('dark')) {
+            document.body.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+            updateThemeIcon(true);
+        }
+
+        document.body.classList.add('cv-export-mode');
+        window.scrollTo(0, 0);
+
+        // Split into logical pages without moving any DOM nodes: find
+        // the element marking the start of page 2 (Learning Highlights),
+        // and toggle visibility of everything before/after it in turn.
+        const pageBreakEl = cvContent.querySelector('.page-break, .cv-learning-section-wrapper');
+        let page2Root = null;
+        if (pageBreakEl) {
+            page2Root = pageBreakEl;
+            while (page2Root.parentElement && page2Root.parentElement !== cvContent) {
+                page2Root = page2Root.parentElement;
+            }
+        }
+
+        function cleanup() {
+            document.body.classList.remove('cv-export-mode');
+            if (page2Root) page2Root.style.removeProperty('display');
+            Array.prototype.forEach.call(cvContent.children, function(child) {
+                child.style.removeProperty('display');
+            });
+            downloadBtn.disabled = false;
+            downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
+        }
+
+        try {
+            await nextFrame();
+
+            // Get a bare jsPDF instance through html2pdf's own worker
+            // chain. IMPORTANT: we seed this from a trivial 1px scratch
+            // element, NOT the real cvContent — running toPdf() on the
+            // full, un-hidden CV would let html2pdf auto-paginate it by
+            // itself (the exact bug we're fixing), leaving a leftover,
+            // unmasked page behind. The scratch element guarantees
+            // exactly one trivial page to start from; the A4 page size
+            // itself comes from the jsPDF option below, independent of
+            // the scratch element's tiny size.
+            const scratchEl = document.createElement('div');
+            scratchEl.style.cssText = 'width:2px;height:2px;background:#0f172a;';
+            document.body.appendChild(scratchEl);
+            const pdf = await html2pdf()
+                .set({ jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } })
+                .from(scratchEl)
+                .toPdf()
+                .get('pdf');
+            scratchEl.remove();
+
+            // Defensive: make sure we start from exactly one known page.
+            while (pdf.getNumberOfPages() > 1) {
+                pdf.deletePage(pdf.getNumberOfPages());
+            }
+            pdf.setPage(1);
+
+            if (page2Root) {
+                // --- PAGE 1: everything except page2Root ---
+                page2Root.style.display = 'none';
+                await nextFrame();
+                let canvas = await captureElement(cvContent);
+                paintCanvasOnCurrentPage(pdf, canvas);
+
+                // --- PAGE 2: only page2Root ---
+                page2Root.style.display = '';
+                Array.prototype.forEach.call(cvContent.children, function(child) {
+                    if (child !== page2Root) child.style.display = 'none';
+                });
+                await nextFrame();
+                canvas = await captureElement(cvContent);
+                pdf.addPage();
+                paintCanvasOnCurrentPage(pdf, canvas);
+            } else {
+                // No page-break marker found: export as a single page.
+                const canvas = await captureElement(cvContent);
+                paintCanvasOnCurrentPage(pdf, canvas);
+            }
+
+            pdf.save('Mudassar_Hussain_CV.pdf');
+            cleanup();
+            showToastManager('✅ CV downloaded!');
+        } catch (err) {
+            console.error('PDF generation error:', err);
+            cleanup();
+            showToastManager('❌ PDF generation failed');
+        }
     });
 }
-// Setup page-specific management controls
-function setupPageManagementControls() {
-    setupLearningStatsToggle();
-
-    // Learning page controls
-    setupLearningPageControls();
-    setupLearningImport();
-    
-    // Project page controls
-    setupProjectPageControls();
-    setupProjectImport();
-    // ========== NEW: Certificate Manager ==========
-    if (typeof initCertificateManager === 'function') {
-        initCertificateManager();
-    }
-    // Initial render of management UI
-    setTimeout(() => {
-        renderManagementUI();
-        updateLockStatus();
-        updateHomepageForms();
-    }, 100);
-}
-
 function setLearningPageView(view) {
     const buttons = document.querySelectorAll('.stats-toggle-btn');
     const learningSection = document.getElementById('learningStatsSection');
