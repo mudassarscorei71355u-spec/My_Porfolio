@@ -578,7 +578,6 @@ function updateCVContent() {
             : '';
     }
 }
-
 function setupDownloadCV() {
     const downloadBtn = document.getElementById('downloadCVBtn');
     if (!downloadBtn) return;
@@ -623,6 +622,7 @@ function setupDownloadCV() {
             #cvExportClone * {
                 margin: 0;
                 padding: 0;
+                box-sizing: border-box;
             }
             #cvExportClone .cv-container {
                 width: 100%;
@@ -678,20 +678,19 @@ function setupDownloadCV() {
             #cvExportClone .cv-body-grid {
                 display: flex;
                 gap: 16px;
-                align-items: start;
+                align-items: flex-start;
                 width: 100%;
-                flex-wrap: wrap;
+                flex-wrap: nowrap;
             }
             #cvExportClone .cv-column {
                 width: 50%;
-                page-break-inside: auto;
                 display: flex;
                 flex-direction: column;
                 gap: 0;
                 min-width: 0;
             }
             #cvExportClone .cv-summary-block {
-                grid-column: 1 / -1;
+                width: 100%;
                 margin-bottom: 10px;
                 page-break-inside: avoid;
                 break-inside: avoid;
@@ -717,6 +716,8 @@ function setupDownloadCV() {
             }
             #cvExportClone .cv-item {
                 margin-bottom: 8px;
+                page-break-inside: avoid;
+                break-inside: avoid;
             }
             #cvExportClone .cv-item-header {
                 display: flex;
@@ -774,8 +775,8 @@ function setupDownloadCV() {
                 display: grid;
                 grid-template-columns: 1fr;
                 gap: 6px;
-                page-break-inside: auto;
-                break-inside: auto;
+                page-break-inside: avoid;
+                break-inside: avoid;
             }
             #cvExportClone .cv-projects-grid .cv-item {
                 padding: 6px;
@@ -783,6 +784,8 @@ function setupDownloadCV() {
                 border-radius: 6px;
                 border: 1px solid #334155;
                 margin-bottom: 0;
+                page-break-inside: avoid;
+                break-inside: avoid;
             }
             #cvExportClone .cv-projects-grid .cv-item p {
                 display: -webkit-box;
@@ -797,8 +800,6 @@ function setupDownloadCV() {
                 gap: 4px;
                 page-break-inside: avoid;
                 break-inside: avoid;
-                page-break-before: always;
-                break-before: page;
             }
             #cvExportClone .certifications-list {
                 display: flex;
@@ -809,6 +810,8 @@ function setupDownloadCV() {
                 margin-bottom: 6px;
                 font-size: 0.7rem;
                 color: #cbd5e1;
+                page-break-inside: avoid;
+                break-inside: avoid;
             }
             #cvExportClone .cv-learning-tag {
                 display: inline-block;
@@ -839,6 +842,10 @@ function setupDownloadCV() {
                 page-break-before: always;
                 break-before: page;
             }
+            #cvExportClone .cv-learning-section-wrapper {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
         `;
         
         document.head.appendChild(exportStyleElement);
@@ -857,7 +864,7 @@ function setupDownloadCV() {
                     backgroundColor: '#0f172a'
                 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak: { mode: ['avoid-all', 'css'] }
+                pagebreak: { mode: ['css', 'legacy'] }
             }).from(clone).save().then(function() {
                 downloadBtn.disabled = false;
                 downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
