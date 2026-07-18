@@ -582,51 +582,66 @@ function setupDownloadCV() {
     const downloadBtn = document.getElementById('downloadCVBtn');
     if (!downloadBtn) return;
 
-    // ------------------------------------------------------------------
-    // WHAT WAS STILL WRONG
-    // ------------------------------------------------------------------
-    // The previous version captured each logical section as ONE image
-    // and then force-fit it onto ONE PDF page by shrinking it
-    // (Math.min(1, availableHMM / naturalHMM)). That's exactly the
-    // "zoom" symptom you're seeing: as soon as content is taller than a
-    // single page, everything (including text) gets scaled down to
-    // squeeze it in, instead of flowing the overflow onto a new page.
-    //
-    // FIX: never shrink. Instead, paginate: capture each logical section
-    // as one tall canvas at NATURAL scale, then slice that canvas into
-    // as many full-size, full-width page-height chunks as needed. Since
-    // the two-column grid (.cv-body-grid) is captured as a single flat
-    // image, slicing horizontally automatically keeps both columns
-    // side-by-side on every resulting page — the two-column format is
-    // preserved, it just continues across pages instead of shrinking.
-    //
-    // To avoid cutting a slice through the middle of a CV item/section
-    // (text getting chopped mid-line), we measure the real DOM
-    // (.cv-item, .cv-section-block, .cv-header, .cv-summary-block, etc.)
-    // bounding boxes BEFORE capture and only allow page breaks to land
-    // in the gaps between those elements. If a target break point falls
-    // inside an element, we back up to the start of that element (so it
-    // moves whole onto the next page) rather than slicing through it.
-    // ------------------------------------------------------------------
-
     if (typeof html2pdf === 'undefined') {
         downloadBtn.style.opacity = '0.5';
         downloadBtn.title = 'html2pdf library not loaded';
         return;
     }
 
-    const EXPORT_STYLE_ID = 'cv-export-style';
-    if (!document.getElementById(EXPORT_STYLE_ID)) {
-        const styleEl = document.createElement('style');
-        styleEl.id = EXPORT_STYLE_ID;
-        styleEl.textContent = `
+    // ------------------------------------------------------------------
+    // THEME PALETTES — pulled straight from your base.css :root and
+    // body.dark variable blocks (bg-primary/bg-card/text/border/accent),
+    // plus the chip color your site already uses for dark badges
+    // (#1e3a5f/#60a5fa, see .course-badge / .badge.grade-a in
+    // body.dark) and its light equivalent (--accent-soft / --accent).
+    // Nothing here is guessed — if your variables change, update these
+    // two objects to match and the export stays in sync.
+    // ------------------------------------------------------------------
+    const LIGHT_PALETTE = {
+        pageBg: '#f0f4f8',
+        cardBg: '#ffffff',
+        border: '#e2e8f0',
+        textPrimary: '#1a2a4f',
+        textSecondary: '#4a5568',
+        textMuted: '#718096',
+        accent: '#3b82f6',
+        chipBg: '#eff6ff',
+        chipText: '#3b82f6'
+    };
+    const DARK_PALETTE = {
+        pageBg: '#0f172a',
+        cardBg: '#1e293b',
+        border: '#334155',
+        textPrimary: '#f1f5f9',
+        textSecondary: '#cbd5e1',
+        textMuted: '#94a3b8',
+        accent: '#60a5fa',
+        chipBg: '#1e3a5f',
+        chipText: '#60a5fa'
+    };
+
+    function hexToRgb(hex) {
+        const h = hex.replace('#', '');
+        return [
+            parseInt(h.substring(0, 2), 16),
+            parseInt(h.substring(2, 4), 16),
+            parseInt(h.substring(4, 6), 16)
+        ];
+    }
+
+    // Builds the export override CSS for whichever palette (light or
+    // dark) matches the theme that's ACTIVE on the page right now.
+    // This replaces the old version, which hardcoded dark colors no
+    // matter what — that's why light mode used to export dark.
+    function buildExportCss(p) {
+        return `
             body.cv-export-mode #cvContent {
                 width: 794px !important;
                 max-width: 794px !important;
                 margin: 0 !important;
                 padding: 16px;
-                background: #0f172a;
-                color: #f1f5f9;
+                background: ${p.pageBg};
+                color: ${p.textPrimary};
                 font-family: Inter, Arial, sans-serif;
                 line-height: 1.2;
                 -webkit-print-color-adjust: exact !important;
@@ -641,16 +656,16 @@ function setupDownloadCV() {
             }
             body.cv-export-mode #cvContent .cv-container {
                 width: 100%;
-                background: #1e293b;
-                color: #f1f5f9;
-                border: 1px solid #334155;
+                background: ${p.cardBg};
+                color: ${p.textPrimary};
+                border: 1px solid ${p.border};
                 border-radius: 14px;
                 padding: 18px;
                 box-shadow: none;
             }
             body.cv-export-mode #cvContent .cv-header {
                 text-align: center;
-                border-bottom: 2px solid #60a5fa;
+                border-bottom: 2px solid ${p.accent};
                 margin-bottom: 12px;
                 padding-bottom: 10px;
             }
@@ -670,12 +685,12 @@ function setupDownloadCV() {
                 font-size: 1.2rem;
                 font-weight: 700;
                 margin-bottom: 2px;
-                color: #f1f5f9;
+                color: ${p.textPrimary};
             }
             body.cv-export-mode #cvContent .cv-title {
                 font-size: 0.8rem;
                 margin-bottom: 6px;
-                color: #60a5fa;
+                color: ${p.accent};
                 font-weight: 500;
             }
             body.cv-export-mode #cvContent .cv-contact-info {
@@ -684,7 +699,7 @@ function setupDownloadCV() {
                 justify-content: center;
                 gap: 8px;
                 font-size: 0.65rem;
-                color: #94a3b8;
+                color: ${p.textMuted};
                 line-height: 1.2;
             }
             body.cv-export-mode #cvContent .cv-body-grid {
@@ -711,7 +726,7 @@ function setupDownloadCV() {
                 margin: 0;
                 font-size: 0.7rem;
                 line-height: 1.3;
-                color: #cbd5e1;
+                color: ${p.textSecondary};
             }
             body.cv-export-mode #cvContent .cv-section-block {
                 margin-bottom: 12px;
@@ -720,8 +735,8 @@ function setupDownloadCV() {
                 font-size: 0.85rem;
                 margin: 0 0 6px 0;
                 padding-bottom: 3px;
-                border-bottom: 2px solid #60a5fa;
-                color: #60a5fa;
+                border-bottom: 2px solid ${p.accent};
+                color: ${p.accent};
                 font-weight: 600;
             }
             body.cv-export-mode #cvContent .cv-item {
@@ -737,35 +752,35 @@ function setupDownloadCV() {
             body.cv-export-mode #cvContent .cv-item-title {
                 font-weight: 600;
                 font-size: 0.75rem;
-                color: #f1f5f9;
+                color: ${p.textPrimary};
             }
             body.cv-export-mode #cvContent .cv-item-date {
                 font-size: 0.65rem;
-                color: #60a5fa;
+                color: ${p.accent};
             }
             body.cv-export-mode #cvContent .cv-item-subtitle {
                 font-size: 0.7rem;
-                color: #cbd5e1;
+                color: ${p.textSecondary};
                 margin-top: 1px;
             }
             body.cv-export-mode #cvContent .cv-item p {
                 margin: 2px 0 0 0;
                 font-size: 0.65rem;
-                color: #94a3b8;
+                color: ${p.textMuted};
                 line-height: 1.2;
             }
             body.cv-export-mode #cvContent .cv-tech-tags {
                 margin-top: 3px;
-                background: #1e3a5f;
+                background: ${p.chipBg};
                 padding: 2px 6px;
                 border-radius: 10px;
                 font-size: 0.6rem;
                 font-weight: 500;
-                color: #60a5fa;
+                color: ${p.chipText};
                 display: inline-flex;
                 flex-wrap: wrap;
                 gap: 3px;
-                border: 1px solid #334155;
+                border: 1px solid ${p.border};
             }
             body.cv-export-mode #cvContent .skills-grid-cv {
                 display: grid;
@@ -774,8 +789,8 @@ function setupDownloadCV() {
             }
             body.cv-export-mode #cvContent .skill-group {
                 padding: 3px 0;
-                border-bottom: 1px solid #334155;
-                color: #cbd5e1;
+                border-bottom: 1px solid ${p.border};
+                color: ${p.textSecondary};
                 font-size: 0.7rem;
                 line-height: 1.2;
             }
@@ -786,9 +801,9 @@ function setupDownloadCV() {
             }
             body.cv-export-mode #cvContent .cv-projects-grid .cv-item {
                 padding: 6px;
-                background: #0f172a;
+                background: ${p.pageBg};
                 border-radius: 6px;
-                border: 1px solid #334155;
+                border: 1px solid ${p.border};
                 margin-bottom: 0;
             }
             body.cv-export-mode #cvContent .cv-projects-grid .cv-item p {
@@ -811,18 +826,18 @@ function setupDownloadCV() {
             body.cv-export-mode #cvContent .cv-learning-group {
                 margin-bottom: 6px;
                 font-size: 0.7rem;
-                color: #cbd5e1;
+                color: ${p.textSecondary};
             }
             body.cv-export-mode #cvContent .cv-learning-tag {
                 display: inline-block;
-                background: #1e3a5f;
-                color: #60a5fa;
+                background: ${p.chipBg};
+                color: ${p.chipText};
                 padding: 2px 6px;
                 border-radius: 8px;
                 font-size: 0.6rem;
                 margin-right: 3px;
                 margin-bottom: 2px;
-                border: 1px solid #334155;
+                border: 1px solid ${p.border};
             }
             body.cv-export-mode #cvContent .cv-two-columns {
                 display: grid !important;
@@ -832,7 +847,7 @@ function setupDownloadCV() {
             body.cv-export-mode #cvContent .cv-two-columns ul {
                 padding-left: 16px;
                 margin-top: 3px;
-                color: #cbd5e1;
+                color: ${p.textSecondary};
                 font-size: 0.7rem;
             }
             body.cv-export-mode #cvContent .cv-two-columns li {
@@ -846,7 +861,18 @@ function setupDownloadCV() {
                 z-index: 2147483647;
             }
         `;
-        document.head.appendChild(styleEl);
+    }
+
+    const EXPORT_STYLE_ID = 'cv-export-style';
+    function applyExportStyle(palette) {
+        let styleEl = document.getElementById(EXPORT_STYLE_ID);
+        if (!styleEl) {
+            styleEl = document.createElement('style');
+            styleEl.id = EXPORT_STYLE_ID;
+            document.head.appendChild(styleEl);
+        }
+        // Always rebuild — theme may have changed since the last export.
+        styleEl.textContent = buildExportCss(palette);
     }
 
     // A4 page geometry in mm.
@@ -923,8 +949,10 @@ function setupDownloadCV() {
 
     // Captures `el` via html2pdf's own worker chain (avoids depending
     // on separately-exposed html2canvas/jsPDF globals) and returns the
-    // full-size canvas.
-    async function captureElement(el) {
+    // full-size canvas. `backgroundColor` must match the current
+    // theme's page background so there's no color mismatch behind
+    // transparent/antialiased edges.
+    async function captureElement(el, backgroundColor) {
         void el.offsetHeight; // force reflow before measuring/capturing
         await nextFrame();
 
@@ -933,7 +961,7 @@ function setupDownloadCV() {
                 scale: CAPTURE_SCALE,
                 useCORS: true,
                 allowTaint: true,
-                backgroundColor: '#0f172a',
+                backgroundColor: backgroundColor,
                 logging: false,
                 scrollX: 0,
                 scrollY: 0
@@ -945,13 +973,14 @@ function setupDownloadCV() {
     // Slices `canvas` into as many natural-scale, full-width pages as
     // needed to hold its full height, breaking only at positions that
     // are safe according to `zones`. Pages are added to `pdf` at
-    // natural size (no shrinking) — this is what replaces the old
-    // "shrink to fit one page" behavior. `pageTracker` is a small
-    // mutable object ({ used: boolean }) shared across calls so the
-    // very first slice of the whole document reuses the PDF's existing
-    // page 1, while every other slice (including ones from a later
-    // logical section) gets pdf.addPage().
-    function paginateCanvasOntoPdf(pdf, canvas, zones, pageTracker) {
+    // natural size (no shrinking). `pageBgRgb` is used to paint each
+    // page's background before the slice is placed, matching the
+    // current theme. `pageTracker` is a small mutable object
+    // ({ used: boolean }) shared across calls so the very first slice
+    // of the whole document reuses the PDF's existing page 1, while
+    // every other slice (including ones from a later logical section)
+    // gets pdf.addPage().
+    function paginateCanvasOntoPdf(pdf, canvas, zones, pageTracker, pageBgRgb) {
         const availableWMM = PAGE_W_MM - 2 * MARGIN_MM;
         const availableHMM = PAGE_H_MM - 2 * MARGIN_MM;
 
@@ -974,7 +1003,7 @@ function setupDownloadCV() {
             sliceCanvas.width = canvas.width;
             sliceCanvas.height = Math.ceil(sliceHeightPx);
             const ctx = sliceCanvas.getContext('2d');
-            ctx.fillStyle = '#0f172a';
+            ctx.fillStyle = 'rgb(' + pageBgRgb.join(',') + ')';
             ctx.fillRect(0, 0, sliceCanvas.width, sliceCanvas.height);
             ctx.drawImage(
                 canvas,
@@ -987,7 +1016,7 @@ function setupDownloadCV() {
             }
             pageTracker.used = true;
 
-            pdf.setFillColor(15, 23, 42); // #0f172a
+            pdf.setFillColor(pageBgRgb[0], pageBgRgb[1], pageBgRgb[2]);
             pdf.rect(0, 0, PAGE_W_MM, PAGE_H_MM, 'F');
 
             const imgWMM = availableWMM;
@@ -1008,12 +1037,15 @@ function setupDownloadCV() {
         downloadBtn.disabled = true;
         downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
 
-        if (!document.body.classList.contains('dark')) {
-            document.body.classList.add('dark');
-            localStorage.setItem('theme', 'dark');
-            updateThemeIcon(true);
-        }
+        // Use whichever theme is ACTIVE right now — no forcing dark
+        // mode anymore. This is the actual fix for "always downloads
+        // dark": the old code unconditionally added the .dark class
+        // here before capturing.
+        const isDark = document.body.classList.contains('dark');
+        const palette = isDark ? DARK_PALETTE : LIGHT_PALETTE;
+        const pageBgRgb = hexToRgb(palette.pageBg);
 
+        applyExportStyle(palette);
         document.body.classList.add('cv-export-mode');
         window.scrollTo(0, 0);
 
@@ -1040,9 +1072,10 @@ function setupDownloadCV() {
             await nextFrame();
 
             // Seed a bare jsPDF instance via a trivial scratch element
-            // (not the real content — see original notes on why).
+            // (not the real content — running toPdf() on the full,
+            // un-hidden CV would let html2pdf auto-paginate it itself).
             const scratchEl = document.createElement('div');
-            scratchEl.style.cssText = 'width:2px;height:2px;background:#0f172a;';
+            scratchEl.style.cssText = 'width:2px;height:2px;background:' + palette.pageBg + ';';
             document.body.appendChild(scratchEl);
             const pdf = await html2pdf()
                 .set({ jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } })
@@ -1063,8 +1096,8 @@ function setupDownloadCV() {
                 page2Root.style.display = 'none';
                 await nextFrame();
                 let zones = getForbiddenZones(cvContent);
-                let canvas = await captureElement(cvContent);
-                paginateCanvasOntoPdf(pdf, canvas, zones, pageTracker);
+                let canvas = await captureElement(cvContent, palette.pageBg);
+                paginateCanvasOntoPdf(pdf, canvas, zones, pageTracker, pageBgRgb);
 
                 // --- SECTION 2: only page2Root ---
                 page2Root.style.display = '';
@@ -1073,12 +1106,12 @@ function setupDownloadCV() {
                 });
                 await nextFrame();
                 zones = getForbiddenZones(cvContent);
-                canvas = await captureElement(cvContent);
-                paginateCanvasOntoPdf(pdf, canvas, zones, pageTracker);
+                canvas = await captureElement(cvContent, palette.pageBg);
+                paginateCanvasOntoPdf(pdf, canvas, zones, pageTracker, pageBgRgb);
             } else {
                 const zones = getForbiddenZones(cvContent);
-                const canvas = await captureElement(cvContent);
-                paginateCanvasOntoPdf(pdf, canvas, zones, pageTracker);
+                const canvas = await captureElement(cvContent, palette.pageBg);
+                paginateCanvasOntoPdf(pdf, canvas, zones, pageTracker, pageBgRgb);
             }
 
             pdf.save('Mudassar_Hussain_CV.pdf');
