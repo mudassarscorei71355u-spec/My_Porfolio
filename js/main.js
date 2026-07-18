@@ -603,19 +603,116 @@ function setupDownloadCV() {
             updateThemeIcon(true);
         }
 
-        const pdfElement = element.cloneNode(true);
-        pdfElement.classList.add('pdf-layout');
+        const exportStyles = `
+            <style>
+                .cv-export-root {
+                    width: 1100px;
+                    max-width: 1100px;
+                    padding: 0;
+                    background: #0f172a;
+                    color: #f1f5f9;
+                    font-family: Inter, Arial, sans-serif;
+                }
+                .cv-export-root .cv-container {
+                    width: 100%;
+                    background: #1e293b;
+                    color: #f1f5f9;
+                    border: 1px solid #334155;
+                    border-radius: 20px;
+                    padding: 26px;
+                    box-shadow: none;
+                }
+                .cv-export-root .cv-header {
+                    text-align: center;
+                    border-bottom: 2px solid #60a5fa;
+                    margin-bottom: 18px;
+                    padding-bottom: 16px;
+                }
+                .cv-export-root .cv-body-grid {
+                    display: grid !important;
+                    grid-template-columns: 1fr 1fr !important;
+                    gap: 24px !important;
+                    align-items: start;
+                }
+                .cv-export-root .cv-column {
+                    display: flex !important;
+                    flex-direction: column !important;
+                    gap: 0;
+                    min-width: 0;
+                }
+                .cv-export-root .cv-two-columns {
+                    display: grid !important;
+                    grid-template-columns: 1fr 1fr !important;
+                    gap: 16px !important;
+                }
+                .cv-export-root .cv-section-block {
+                    margin-bottom: 20px;
+                    break-inside: avoid;
+                    page-break-inside: avoid;
+                }
+                .cv-export-root .cv-item {
+                    margin-bottom: 14px;
+                    break-inside: avoid;
+                    page-break-inside: avoid;
+                }
+                .cv-export-root .cv-contact-info {
+                    display: flex !important;
+                    flex-wrap: wrap !important;
+                    justify-content: center !important;
+                    gap: 14px !important;
+                }
+                .cv-export-root .cv-item-header {
+                    display: flex !important;
+                    justify-content: space-between !important;
+                    flex-wrap: wrap !important;
+                    gap: 8px !important;
+                }
+                .cv-export-root .skills-grid-cv {
+                    display: grid !important;
+                    grid-template-columns: 1fr 1fr !important;
+                    gap: 10px !important;
+                }
+                .cv-export-root .cv-projects-grid {
+                    display: grid !important;
+                    grid-template-columns: 1fr 1fr !important;
+                    gap: 12px !important;
+                }
+                .cv-export-root .cv-learnings-grid {
+                    display: grid !important;
+                    grid-template-columns: 1fr !important;
+                    gap: 8px !important;
+                }
+                .cv-export-root .cv-item-title,
+                .cv-export-root .cv-item-subtitle,
+                .cv-export-root .cv-section-block h3,
+                .cv-export-root .cv-item-date,
+                .cv-export-root .cv-contact-info,
+                .cv-export-root .skill-group {
+                    color: #f1f5f9 !important;
+                }
+                .cv-export-root .cv-item-date,
+                .cv-export-root .cv-tech-tags {
+                    color: #60a5fa !important;
+                }
+                .cv-export-root .cv-tech-tags,
+                .cv-export-root .skill-group {
+                    background: #1e3a5f !important;
+                    border-color: #334155 !important;
+                }
+            </style>
+        `;
 
         const wrapper = document.createElement('div');
         wrapper.style.position = 'fixed';
         wrapper.style.left = '-9999px';
         wrapper.style.top = '0';
-        wrapper.style.width = '1200px';
-        wrapper.style.maxWidth = '1200px';
+        wrapper.style.width = '1100px';
+        wrapper.style.maxWidth = '1100px';
         wrapper.style.background = '#0f172a';
         wrapper.style.padding = '0';
         wrapper.style.zIndex = '0';
-        wrapper.appendChild(pdfElement);
+        wrapper.innerHTML = exportStyles + element.outerHTML;
+        wrapper.className = 'cv-export-root';
         document.body.appendChild(wrapper);
 
         setTimeout(function() {
@@ -626,7 +723,7 @@ function setupDownloadCV() {
                 html2canvas: {
                     scale: 3,
                     useCORS: true,
-                    width: 1200,
+                    width: 1100,
                     windowWidth: 1400,
                     scrollX: 0,
                     scrollY: 0
