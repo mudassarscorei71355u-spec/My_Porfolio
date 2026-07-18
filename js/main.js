@@ -610,12 +610,13 @@ function setupDownloadCV() {
                     background: #0f172a;
                     color: #f1f5f9;
                     font-family: Inter, Arial, sans-serif;
+                    line-height: 1.3;
                 }
                 .cv-export-root {
-                    width: 1100px;
-                    max-width: 1100px;
-                    margin: 0 auto;
-                    padding: 24px;
+                    width: 100%;
+                    max-width: 100%;
+                    margin: 0;
+                    padding: 20px;
                     background: #0f172a;
                     color: #f1f5f9;
                 }
@@ -624,20 +625,43 @@ function setupDownloadCV() {
                     background: #1e293b;
                     color: #f1f5f9;
                     border: 1px solid #334155;
-                    border-radius: 20px;
-                    padding: 26px;
+                    border-radius: 16px;
+                    padding: 20px;
                     box-shadow: none;
                 }
                 .cv-export-root .cv-header {
                     text-align: center;
                     border-bottom: 2px solid #60a5fa;
-                    margin-bottom: 18px;
-                    padding-bottom: 16px;
+                    margin-bottom: 14px;
+                    padding-bottom: 12px;
+                }
+                .cv-export-root .cv-header-info {
+                    margin: 0;
+                }
+                .cv-export-root .cv-name {
+                    font-size: 1.4rem;
+                    margin-bottom: 4px;
+                }
+                .cv-export-root .cv-title {
+                    font-size: 0.9rem;
+                    margin-bottom: 8px;
+                }
+                .cv-export-root .cv-contact-info {
+                    display: flex !important;
+                    flex-wrap: wrap !important;
+                    justify-content: center !important;
+                    gap: 10px !important;
+                    font-size: 0.7rem !important;
+                }
+                .cv-export-root .avatar-circle {
+                    width: 100px !important;
+                    height: 100px !important;
+                    margin: 0 auto 8px !important;
                 }
                 .cv-export-root .cv-body-grid {
                     display: grid !important;
                     grid-template-columns: 1fr 1fr !important;
-                    gap: 24px !important;
+                    gap: 20px !important;
                     align-items: start;
                 }
                 .cv-export-root .cv-column {
@@ -649,61 +673,131 @@ function setupDownloadCV() {
                 .cv-export-root .cv-two-columns {
                     display: grid !important;
                     grid-template-columns: 1fr 1fr !important;
-                    gap: 16px !important;
+                    gap: 12px !important;
                 }
-                .cv-export-root .cv-section-block {
-                    margin-bottom: 20px;
+                .cv-export-root .cv-summary-block {
+                    margin-bottom: 12px;
                     break-inside: avoid;
                     page-break-inside: avoid;
+                    grid-column: 1 / -1;
                 }
-                .cv-export-root .cv-item {
+                .cv-export-root .cv-summary-block p {
+                    margin: 0;
+                    font-size: 0.8rem;
+                    line-height: 1.3;
+                }
+                .cv-export-root .cv-section-block {
                     margin-bottom: 14px;
                     break-inside: avoid;
                     page-break-inside: avoid;
                 }
-                .cv-export-root .cv-contact-info {
-                    display: flex !important;
-                    flex-wrap: wrap !important;
-                    justify-content: center !important;
-                    gap: 14px !important;
+                .cv-export-root .cv-section-block h3 {
+                    font-size: 0.95rem;
+                    margin: 0 0 8px 0;
+                    padding-bottom: 4px;
+                    border-bottom: 2px solid #60a5fa;
+                    color: #60a5fa;
+                }
+                .cv-export-root .cv-item {
+                    margin-bottom: 10px;
+                    break-inside: avoid;
+                    page-break-inside: avoid;
                 }
                 .cv-export-root .cv-item-header {
                     display: flex !important;
                     justify-content: space-between !important;
                     flex-wrap: wrap !important;
-                    gap: 8px !important;
+                    gap: 4px !important;
+                    margin-bottom: 2px;
+                }
+                .cv-export-root .cv-item-title {
+                    font-weight: 600;
+                    font-size: 0.85rem;
+                    color: #f1f5f9;
+                }
+                .cv-export-root .cv-item-date {
+                    font-size: 0.7rem;
+                    color: #60a5fa;
+                }
+                .cv-export-root .cv-item-subtitle {
+                    font-size: 0.75rem;
+                    color: #cbd5e1;
+                    margin-top: 2px;
+                }
+                .cv-export-root .cv-item p {
+                    margin: 2px 0 0 0;
+                    font-size: 0.7rem;
+                    color: #94a3b8;
+                    line-height: 1.2;
+                }
+                .cv-export-root .cv-tech-tags {
+                    margin-top: 4px;
+                    background: #1e3a5f !important;
+                    padding: 3px 8px !important;
+                    border-radius: 12px;
+                    font-size: 0.65rem !important;
+                    font-weight: 500;
+                    color: #60a5fa;
+                    display: inline-flex;
+                    flex-wrap: wrap;
+                    gap: 4px;
+                    border: 1px solid #334155;
                 }
                 .cv-export-root .skills-grid-cv {
                     display: grid !important;
-                    grid-template-columns: 1fr 1fr !important;
-                    gap: 10px !important;
+                    grid-template-columns: 1fr !important;
+                    gap: 6px !important;
+                }
+                .cv-export-root .skill-group {
+                    padding: 4px 0;
+                    border-bottom: 1px solid #334155;
+                    color: #cbd5e1;
+                    font-size: 0.75rem;
+                    line-height: 1.2;
                 }
                 .cv-export-root .cv-projects-grid {
-                    display: grid !important;
-                    grid-template-columns: 1fr 1fr !important;
-                    gap: 12px !important;
-                }
-                .cv-export-root .cv-learnings-grid {
                     display: grid !important;
                     grid-template-columns: 1fr !important;
                     gap: 8px !important;
                 }
-                .cv-export-root .cv-item-title,
-                .cv-export-root .cv-item-subtitle,
-                .cv-export-root .cv-section-block h3,
-                .cv-export-root .cv-item-date,
-                .cv-export-root .cv-contact-info,
-                .cv-export-root .skill-group {
-                    color: #f1f5f9 !important;
+                .cv-export-root .cv-projects-grid .cv-item {
+                    padding: 8px !important;
+                    background: #0f172a !important;
+                    border-radius: 8px !important;
+                    border: 1px solid #334155 !important;
+                    margin-bottom: 0;
                 }
-                .cv-export-root .cv-item-date,
-                .cv-export-root .cv-tech-tags {
-                    color: #60a5fa !important;
+                .cv-export-root .cv-projects-grid .cv-item p {
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
                 }
-                .cv-export-root .cv-tech-tags,
-                .cv-export-root .skill-group {
-                    background: #1e3a5f !important;
-                    border-color: #334155 !important;
+                .cv-export-root .cv-learnings-grid {
+                    display: grid !important;
+                    grid-template-columns: 1fr !important;
+                    gap: 6px !important;
+                }
+                .cv-export-root .certifications-list {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 6px;
+                }
+                .cv-export-root .cv-learning-group {
+                    margin-bottom: 8px;
+                    font-size: 0.75rem;
+                    break-inside: avoid;
+                    page-break-inside: avoid;
+                }
+                .cv-export-root .cv-learning-tag {
+                    display: inline-block;
+                    background: #1e3a5f;
+                    color: #60a5fa;
+                    padding: 2px 8px;
+                    border-radius: 10px;
+                    font-size: 0.65rem;
+                    margin-right: 4px;
+                    margin-bottom: 2px;
                 }
             </style>
         `;
@@ -728,8 +822,8 @@ function setupDownloadCV() {
         frame.style.position = 'fixed';
         frame.style.left = '-9999px';
         frame.style.top = '0';
-        frame.style.width = '1200px';
-        frame.style.height = '1800px';
+        frame.style.width = '1000px';
+        frame.style.height = '2000px';
         frame.style.border = '0';
         frame.srcdoc = exportHtml;
         document.body.appendChild(frame);
@@ -748,14 +842,14 @@ function setupDownloadCV() {
                 }
 
                 html2pdf().set({
-                    margin: [8, 8, 8, 8],
+                    margin: [3, 3, 3, 3],
                     filename: 'Mudassar_Hussain_CV.pdf',
                     image: { type: 'jpeg', quality: 0.98 },
                     html2canvas: {
-                        scale: 3,
+                        scale: 2,
                         useCORS: true,
-                        width: 1100,
-                        windowWidth: 1400,
+                        width: 1000,
+                        windowWidth: 1000,
                         scrollX: 0,
                         scrollY: 0
                     },
