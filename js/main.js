@@ -391,8 +391,11 @@ function setupCopyHandlers() {
 // Theme functions
 function initTheme() {
     const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
+    const shouldUseDark = savedTheme === 'dark' || savedTheme === null;
+
+    if (shouldUseDark) {
         document.body.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
         updateThemeIcon(true);
     } else {
         document.body.classList.remove('dark');
@@ -594,38 +597,58 @@ function setupDownloadCV() {
         downloadBtn.disabled = true;
         downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
 
+        if (!document.body.classList.contains('dark')) {
+            document.body.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+            updateThemeIcon(true);
+        }
+
         const pdfElement = element.cloneNode(true);
         pdfElement.classList.add('pdf-layout');
 
         const wrapper = document.createElement('div');
-        wrapper.style.position = 'absolute';
+        wrapper.style.position = 'fixed';
         wrapper.style.left = '-9999px';
         wrapper.style.top = '0';
-        wrapper.style.width = '1100px';
-        wrapper.style.maxWidth = '1100px';
+        wrapper.style.width = '1200px';
+        wrapper.style.maxWidth = '1200px';
+        wrapper.style.background = '#0f172a';
+        wrapper.style.padding = '0';
+        wrapper.style.zIndex = '0';
         wrapper.appendChild(pdfElement);
         document.body.appendChild(wrapper);
 
-        html2pdf().set({
-            margin: [10, 10, 10, 10],
-            filename: 'Mudassar_Hussain_CV.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true, width: 1100 },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        }).from(wrapper).save().then(function() {
-            downloadBtn.disabled = false;
-            downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
-            document.body.removeChild(wrapper);
-            showToastManager('✅ CV downloaded!');
-        }).catch(function(err) {
-            console.error('PDF generation error:', err);
-            downloadBtn.disabled = false;
-            downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
-            if (document.body.contains(wrapper)) {
-                document.body.removeChild(wrapper);
-            }
-            showToastManager('❌ PDF generation failed');
-        });
+        setTimeout(function() {
+            html2pdf().set({
+                margin: [8, 8, 8, 8],
+                filename: 'Mudassar_Hussain_CV.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: {
+                    scale: 3,
+                    useCORS: true,
+                    width: 1200,
+                    windowWidth: 1400,
+                    scrollX: 0,
+                    scrollY: 0
+                },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            }).from(wrapper).save().then(function() {
+                downloadBtn.disabled = false;
+                downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
+                if (document.body.contains(wrapper)) {
+                    document.body.removeChild(wrapper);
+                }
+                showToastManager('✅ CV downloaded!');
+            }).catch(function(err) {
+                console.error('PDF generation error:', err);
+                downloadBtn.disabled = false;
+                downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
+                if (document.body.contains(wrapper)) {
+                    document.body.removeChild(wrapper);
+                }
+                showToastManager('❌ PDF generation failed');
+            });
+        }, 120);
     });
 }
 
