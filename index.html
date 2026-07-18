@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>Mudassar Hussain | Software Engineer Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="container nav-container">
+      <div class="logo-svg">
+        <svg width="160" height="48" viewBox="0 0 260 90" fill="none" xmlns="http://www.w3.org/2000/svg" style="height: 44px; width: auto;">
+          <rect width="260" height="90" rx="14" fill="#0F172A"/>
+          <path d="M28 45L45 27" stroke="#38BDF8" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M28 45L45 63" stroke="#38BDF8" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M72 22L62 68" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M90 27L107 45" stroke="#38BDF8" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M90 63L107 45" stroke="#38BDF8" stroke-width="4.5" stroke-linecap="round"/>
+          <text x="130" y="56" font-family="Poppins, Arial, sans-serif" font-size="32" font-weight="700" fill="white">MH</text>
+          <rect x="185" y="32" width="5" height="28" rx="2" fill="#38BDF8">
+            <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+          </rect>
+        </svg>
+      </div>
+      <div class="header-right">
+        <button class="theme-toggle" id="themeToggle" aria-label="Switch Theme">
+          <i class="fas fa-moon"></i>
+        </button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" class="active-nav">Home</a></li>
+        <li><a href="pages/projects.html">Projects</a></li>
+        <li><a href="pages/learning.html">Learning</a></li>
+        <li><a href="pages/results.html">Results</a></li>
+        <li><a href="pages/cv.html">CV</a></li>
+        <li><a href="#contact" class="contact-nav-link">Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="section hero-section">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-content">
+            <div class="hero-badge"><i class="fas fa-code"></i> Software Engineering Student</div>
+            <h1>Mudassar Hussain</h1>
+            <p class="hero-tagline">Full-Stack Developer & Problem Solver</p>
+            <p class="hero-desc">Building impactful apps with clean code, modern stacks, and database mastery. Currently pursuing Bachelor's in Software Engineering at UET Taxila.</p>
+            <div class="btn-group">
+              <a href="pages/projects.html" class="btn btn-primary"><i class="fas fa-folder-open"></i> Explore Work</a>
+              <a href="pages/cv.html" class="btn btn-outline"><i class="fas fa-file-alt"></i> View CV</a>
+              <a href="https://github.com/mudassarscorei71355u-spec" target="_blank" class="btn btn-outline"><i class="fab fa-github"></i> GitHub</a>
+              <button class="btn btn-outline" id="reloadDataBtn" style="display: none;"><i class="fas fa-sync-alt"></i> Reload</button>
+            </div>
+          </div>
+          <div class="hero-avatar">
+            <div class="avatar-circle">
+              <img src="img/my_img.jpg" alt="Mudassar Hussain" class="profile-img" onerror="this.src='https://placehold.co/400x400?text=Mudassar'">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section info-cards-section">
+      <div class="container">
+        <div class="stat-grid">
+          <div class="info-card">
+            <i class="fas fa-graduation-cap"></i>
+            <h3>Education</h3>
+            <p><strong>Bachelor's in Software Engineering</strong><br>UET Taxila | Aug 2024 – Present</p>
+            <small>Data Structures, OOP, DBMS, Web Dev</small>
+          </div>
+          <div class="info-card">
+            <i class="fas fa-terminal"></i>
+            <h3>Core Strengths</h3>
+            <p id="homeCoreStrengths">Java, C++, Python, Next.js, Node.js, PostgreSQL, Oracle SQL, Linux, Svelte, Express</p>
+          </div>
+          <div class="info-card">
+            <i class="fas fa-graduation-cap"></i>
+            <h3>Learning Journey</h3>
+            <p id="homeLearningSummary">Self-Study: Full-Stack Development (Svelte, Express, PostgreSQL), 30-Day Tracker Completed</p>
+            <p style="font-size:0.8rem; color: var(--text-muted); margin-top: 4px;">YouTube tutorials · AI-Assisted Learning</p>
+            <a href="pages/learning.html" class="text-link">View learning path →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects-preview" class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2><i class="fas fa-laptop-code"></i> Featured Projects</h2>
+          <a href="pages/projects.html" class="view-all">View all projects →</a>
+        </div>
+        <div id="projectStats" class="results-stats-grid" style="margin-bottom: 1.5rem;"></div>
+        <div class="projects-grid" id="featuredProjectsGrid"></div>
+      </div>
+    </section>
+
+    <section id="skills" class="section">
+      <div class="container">
+        <h2><i class="fas fa-cogs"></i> Technical Arsenal</h2>
+        <div class="skills-wrapper">
+          <div class="skills-category">
+            <h3>Core Mastery</h3>
+            <div class="skills-grid" id="coreSkillsList"></div>
+          </div>
+          <div class="skills-category">
+            <h3>Languages & Frameworks</h3>
+            <div class="skills-grid" id="toolsSkillsList"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Password Protected Management Access -->
+    <section id="management-access" class="section management-access-section">
+      <div class="container">
+        <div class="management-wrapper">
+          <h2><i class="fas fa-lock"></i> Management Access</h2>
+          <p style="color: var(--text-muted); margin-bottom: 1rem;">Unlock to manage your projects and learning content.</p>
+          
+          <!-- Password Form -->
+          <div id="passwordForm" class="password-form">
+            <div class="form-group">
+              <label for="passwordInput"><i class="fas fa-lock"></i> Enter Password</label>
+              <div class="input-row">
+                <input type="password" id="passwordInput" placeholder="Enter your password" />
+                <button class="btn btn-primary" id="unlockBtn"><i class="fas fa-unlock"></i> Unlock</button>
+              </div>
+            </div>
+            <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <button class="btn btn-outline btn-sm" id="showChangePasswordBtn"><i class="fas fa-key"></i> Change Password</button>
+              <span class="lock-status" style="font-weight: 500;">🔒 Locked</span>
+            </div>
+          </div>
+
+          <!-- Change Password Form -->
+          <div id="changePasswordForm" class="change-password-form" style="display: none; margin-top: 1rem; padding: 1rem; background: var(--bg-secondary); border-radius: 16px; border: 1px solid var(--border-color);">
+            <h4 style="margin-bottom: 0.5rem;">Change Password</h4>
+            <div class="form-group">
+              <label for="oldPasswordInput">Old Password</label>
+              <input type="password" id="oldPasswordInput" placeholder="Enter old password" />
+            </div>
+            <div class="form-group">
+              <label for="newPasswordInput">New Password</label>
+              <input type="password" id="newPasswordInput" placeholder="Enter new password" />
+            </div>
+            <div class="form-group">
+              <label for="repeatPasswordInput">Repeat New Password</label>
+              <input type="password" id="repeatPasswordInput" placeholder="Repeat new password" />
+            </div>
+            <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap;">
+              <button class="btn btn-primary" id="savePasswordBtn">Save New Password</button>
+              <button class="btn btn-outline" id="cancelPasswordBtn">Cancel</button>
+            </div>
+            <div id="passwordMessage" style="margin-top: 0.5rem; font-size: 0.9rem;"></div>
+          </div>
+
+          <!-- Unlocked status -->
+          <div id="unlockedStatus" style="display: none; margin-top: 0.5rem;">
+            <span style="color: #22c55e;"><i class="fas fa-check-circle"></i> Unlocked</span>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.3rem;">
+              Go to <a href="pages/projects.html" style="color: var(--accent);">Projects</a> or <a href="pages/learning.html" style="color: var(--accent);">Learning</a> pages to add/edit content.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section contact-section">
+      <div class="container">
+        <h2><i class="fas fa-address-card"></i> Get In Touch</h2>
+        <div class="contact-info">
+          <div class="contact-item">
+            <i class="fas fa-phone-alt"></i> 
+            <span id="phoneNumber">0336-9483957</span> 
+            <button class="copy-icon" data-copy="03369483957" aria-label="Copy phone"><i class="far fa-copy"></i></button>
+            <a href="https://wa.me/923369483957" target="_blank" class="whatsapp-btn" aria-label="Chat on WhatsApp">
+              <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-envelope"></i> 
+            <span id="emailAddress">mudssars.core.i7.1355u@gmail.com</span> 
+            <button class="copy-icon" data-copy="mudssars.core.i7.1355u@gmail.com" aria-label="Copy email"><i class="far fa-copy"></i></button>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i> 
+            <span>VPO Miani, Tehsil Kallar Kahar, District Chakwal</span>
+          </div>
+          <div class="contact-item">
+            <i class="fab fa-github"></i> 
+            <a href="https://github.com/mudassarscorei71355u-spec" target="_blank">github.com/mudassarscorei71355u-spec</a>
+          </div>
+        </div>
+        <div class="social-links">
+          <a href="#" class="copy-phone-footer" data-copy="03369483957" aria-label="Copy Phone"><i class="fas fa-phone"></i></a>
+          <a href="https://wa.me/923369483957" target="_blank" class="whatsapp-social" aria-label="WhatsApp Chat"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" class="copy-email-footer" data-copy="mudssars.core.i7.1355u@gmail.com" aria-label="Copy Email"><i class="fas fa-envelope"></i></a>
+          <a href="https://github.com/mudassarscorei71355u-spec" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Mudassar Hussain — Crafted with <i class="fas fa-heart"></i> & modern design</p>
+    <p class="footer-small">15+ Projects | Full-Stack Developer | UET Taxila</p>
+  </footer>
+
+  <div id="customToast" class="custom-toast"></div>
+  
+  <!-- JavaScript Files -->
+  <script src="js/manager.js"></script>
+  <script src="js/learning-manager.js"></script>
+  <script src="js/projects-manager.js"></script>
+  <script src="js/file-importer.js"></script>
+  <script src="js/data-loader.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

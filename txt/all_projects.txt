@@ -1,0 +1,253 @@
+==========
+PROJECTS
+==========
+
+🛒 1. BuyNest - E-Commerce Platform
+Status: in-progress
+🧰 Next.js, Node.js, Express.js, PostgreSQL
+📌 Full-stack e-commerce platform with JWT auth, role-based access, product management, cart & checkout, order processing.
+
+💬 2. SocialNest - Social Media App
+Status: completed
+🧰 Java, JavaFX, PostgreSQL
+📌 Desktop social media app with posts, likes, comments, follow system, timeline feed, and notifications.
+
+🧾 3. SaleSync - POS System
+Status: in-progress
+🧰 C++, GTK, SQLite
+📌 Point of Sale system with multi-user login, product management, invoice generation, PDF receipts.
+
+🌐 4. Portfolio Website
+Status: in-progress
+🧰 HTML, CSS, JavaScript
+📌 Personal portfolio with auto-loading projects and learning from text files, dynamic CV, and mobile-friendly design.
+
+📚 5. BookNest - Library Management System
+Status: in-progress
+🧰 Spring Boot, Spring MVC, Spring Data JPA, PostgreSQL, Thymeleaf
+📌 Full-featured library management system with member registration, book cataloging, borrowing/return tracking, fine calculation, and role-based librarian/admin dashboards. Implements REST APIs with Spring Security and JWT.
+
+📱 6. CampusConnect - College Mobile App Backend
+Status: in-progress
+🧰 Spring Boot, Spring Data JPA, PostgreSQL, WebSockets, JWT
+📌 Backend API for college mobile app featuring student attendance, mark sheets, timetable, event notifications, and real-time chat. Built with microservices architecture and deployed with Docker.
+
+🔗 7. URL Shortener + Analytics
+Status: completed
+🧰 FastAPI, Python, PostgreSQL, Redis, HTML/CSS
+📌 Advanced URL shortening service with custom aliases, click tracking, geolocation analytics, device statistics, and QR code generation. Implements caching with Redis for high performance.
+
+📊 8. Student Performance Analyzer
+Status: in-progress
+🧰 Python, Pandas, NumPy, Matplotlib, Seaborn, Flask
+📌 Data analysis tool that processes student grade data, identifies performance patterns, predicts at-risk students, and generates interactive dashboards. Exports reports as PDF and Excel files.
+
+📋 9. Smart Survey & Poll System
+Status: completed
+🧰 React, Node.js, Express.js, MongoDB, Socket.io
+📌 Real-time survey creation platform with dynamic question types, response tracking, live results visualization, and shareable survey links. Features real-time updates using WebSockets.
+
+🏥 10. HealthTrack - Patient Records System
+Status: in-progress
+🧰 Spring Boot, Oracle SQL, Spring Security, JWT, React
+📌 Complete patient record management system with appointment scheduling, medical history tracking, prescription management, and role-based access for doctors/patients/admins. Uses Oracle for enterprise-grade data.
+
+💼 11. JobPortal - Recruitment Platform
+Status: in-progress
+🧰 Next.js, FastAPI, PostgreSQL, Docker, Redis
+📌 Full-stack recruitment platform with job posting, application tracking, resume parsing, skill matching algorithm, and interview scheduling. Features AI-powered candidate-job matching.
+
+🔐 12. Password Manager Pro
+Status: completed
+🧰 Python, Tkinter, Cryptography (Fernet), SQLite
+📌 Desktop password manager with AES-256 encryption, secure password generation, auto-fill functionality, and multi-vault management. Master password authentication with PBKDF2.
+
+📈 13. Stock Market Dashboard
+Status: in-progress
+🧰 Python, Flask, Pandas, Plotly, YFinance API, SQLite
+📌 Real-time stock market tracker with interactive charts, technical indicators (MACD, RSI), portfolio tracking, and price alerts. Supports multiple exchanges and historical data analysis.
+
+🧪 14. Lab Management System
+Status: in-progress
+🧰 Java, JavaFX, PostgreSQL, JasperReports
+📌 Laboratory management system handling test orders, sample tracking, report generation, and inventory management. Includes barcode scanning, PDF report generation, and email notifications.
+
+⚡ 15. E-Learning Platform API
+Status: completed
+🧰 FastAPI, Python, PostgreSQL, Redis, Stripe API
+📌 Backend for e-learning platform with course management, student enrollment, video progress tracking, quiz system, certificate generation, and payment integration.
+
+📦 16. Inventory Management System
+Status: in-progress
+🧰 C++, SQLite, GTK, File Handling, Crypto++
+📌 Complete inventory system with low-stock alerts, supplier management, purchase orders, sales tracking, and barcode integration. Features data encryption and backup/restore functionality.
+
+🗺️ 17. Travel Buddy - Trip Planner
+Status: in-progress
+🧰 React Native, Node.js, Express.js, MongoDB, Google Maps API
+📌 Mobile app for trip planning with itinerary builder, hotel/flight booking integration, budget tracking, and collaborative planning. Uses Google Maps for location services and route optimization.
+
+🔍 18. CodeSnippets Manager
+Status: completed
+🧰 Java, JavaFX, SQLite, RichTextFX
+📌 Desktop application for organizing and searching code snippets with syntax highlighting, tag management, and GitHub Gist integration. Features full-text search and export functionality.
+
+🏦 19. Banking System Simulator
+Status: in-progress
+🧰 Spring Boot, Spring Data JPA, PostgreSQL, Spring Security
+📌 Complete banking system with account management, fund transfers, transaction history, loan management, and ATM simulation. Implements Spring Security for role-based access with transaction management.
+
+📧 20. MailMaster - Email Automation
+Status: completed
+🧰 Python, Flask, SMTP, IMAP, Pandas, OpenPyXL
+📌 Email automation tool for bulk email sending, template management, recipient segmentation, and campaign analytics. Supports Excel import/export and email tracking.
+
+🎯 21. QuizNest - Online Assessment Platform
+Status: in-progress
+🧰 React, Node.js, Express.js, PostgreSQL, Socket.io
+📌 Complete quiz platform with timer-based tests, multiple question types, automatic grading, detailed analytics, and live leaderboards. Features proctoring simulation and exportable reports.
+
+🎨 22. PixelArt Editor
+Status: completed
+🧰 Python, Tkinter, PIL, NumPy
+📌 Desktop pixel art editor with drawing tools, color palettes, animation frames, sprite sheet export, and undo/redo functionality. Uses NumPy for efficient image processing.
+
+🏋️ 23. FitLife - Fitness Tracker
+Status: in-progress
+🧰 React Native, FastAPI, PostgreSQL, Redis, WebSockets
+📌 Mobile fitness tracking app with workout logging, progress visualization, meal tracking, goal setting, and social sharing features. Real-time sync across devices.
+
+📝 24. Invoice Generator Pro
+Status: completed
+🧰 Python, OpenPyXL, XlsxWriter, ReportLab, Flask
+📌 Professional invoice generation system with customizable templates, currency support, tax calculation, bulk processing, and export to PDF/Excel. Supports multi-company management.
+
+🚀 25. DevOps Pipeline Dashboard
+Status: in-progress
+🧰 Next.js, FastAPI, PostgreSQL, Docker, Redis
+📌 Dashboard for monitoring CI/CD pipelines, build status, deployment history, and automated testing reports. Integrates with GitHub Actions and Jenkins via webhooks.
+
+🎮 26. Game Development Playground
+Status: completed
+🧰 C++, SDL2, OpenGL, GTK
+📌 Collection of classic games (Snake, Tetris, Pong) built with C++ and SDL2/OpenGL, wrapped with GTK launcher. Demonstrates game loops, collision detection, and rendering.
+
+📞 27. Contact Manager Pro
+Status: completed
+🧰 Java, JavaFX, PostgreSQL, PDFBox
+📌 Advanced contact management system with groups, tags, birthday reminders, import/export (CSV/vCard), and merge duplicate contacts. Features PDF report generation and backup.
+
+💳 28. Expense Tracker
+Status: in-progress
+🧰 React Native, Node.js, Express.js, MongoDB
+📌 Mobile expense tracking app with budget management, expense categorization, multi-currency support, receipt scanning, and visual spending analytics. Synced across devices.
+
+🔬 29. Scientific Calculator
+Status: completed
+🧰 Python, Tkinter, SymPy, Matplotlib
+📌 Advanced scientific calculator with mathematical expressions, unit conversions, graphing capabilities, equation solving, and history tracking. Uses SymPy for symbolic mathematics.
+
+🏨 30. Hotel Management System
+Status: in-progress
+🧰 Spring Boot, PostgreSQL, React, Spring Security
+📌 Complete hotel management system with room booking, check-in/out, guest management, billing, housekeeping, and restaurant integration. Features automated pricing and availability.
+
+📊 31. Excel Automation Suite
+Status: completed
+🧰 Python, OpenPyXL, XlsxWriter, Pandas, Tkinter
+📌 Desktop tool for Excel automation including data cleaning, format conversion, bulk operations, pivot table generation, and dashboard creation. Supports multiple file formats.
+
+🖥️ 32. System Monitor
+Status: completed
+🧰 C++, GTK, Linux System APIs, SQLite
+📌 Desktop system monitoring tool showing CPU usage, memory, disk I/O, network activity, and running processes. Features logging, alert system, and performance graphs.
+
+📚 33. Textbook Rental System
+Status: in-progress
+🧰 Java, JavaFX, PostgreSQL, ORMLite
+📌 Textbook rental management for universities with inventory tracking, student rentals, due date management, fine calculation, and automatic reminders.
+
+🌐 34. Multi-language Translation Tool
+Status: completed
+🧰 Python, Flask, Google Translate API, Pandas
+📌 Translation tool supporting 100+ languages with batch translation, auto-detection, pronunciation support, and export to Excel. Maintains translation history and favorites.
+
+🛠️ 35. Code Review Assistant
+Status: in-progress
+🧰 Spring Boot, Java, React, PostgreSQL
+📌 Platform for team code reviews with pull request integration, inline comments, code quality metrics, reviewer assignment, and automated issue detection.
+
+📋 36. Attendance Tracker
+Status: completed
+🧰 Python, Tkinter, Pandas, OpenPyXL, SQLite
+📌 Desktop attendance management with biometric simulation, class-wise tracking, report generation, and automatic parent notification. Exports monthly attendance reports.
+
+🌍 37. Weather Forecast App
+Status: completed
+🧰 Java, JavaFX, REST APIs, JSON (Gson/Jackson)
+📌 Weather application with current conditions, 7-day forecast, interactive maps, severe weather alerts, and location-based services. Uses multiple weather APIs with caching.
+
+💻 38. Virtual Lab Environment
+Status: in-progress
+🧰 Next.js, FastAPI, PostgreSQL, Docker
+📌 Platform for computer science experiments with virtual machines, code compilation, and real-time output. Supports multiple programming languages and collaborative coding.
+
+📁 39. File Organizer
+Status: completed
+🧰 Python, Tkinter, OS Automation, PyInstaller
+📌 Desktop utility that automatically organizes files by type, date, or custom rules. Features duplicate finder, batch renaming, and folder structure templates.
+
+🛡️ 40. Vulnerability Scanner
+Status: in-progress
+🧰 Python, Flask, SQLite, Nmap (Python-nmap)
+📌 Network vulnerability scanner with port scanning, service detection, CVE database lookup, and report generation. Simulates security auditing for learning purposes.
+
+📖 41. Recipe Manager
+Status: completed
+🧰 Java, JavaFX, SQLite, Apache POI
+📌 Recipe management system with ingredient database, nutritional information, meal planning, grocery list generation, and recipe scaling. Import/export to PDF and Excel.
+
+📊 42. Sales Analytics Dashboard
+Status: in-progress
+🧰 React, Node.js, Express.js, PostgreSQL, D3.js
+📌 Interactive sales dashboard with real-time metrics, product performance analysis, customer segmentation, and predictive analytics using ML algorithms.
+
+🔧 43. Database Migration Tool
+Status: completed
+🧰 Python, SQLAlchemy, cx_Oracle, psycopg2, Click
+📌 CLI tool for database migration between different RDBMS (PostgreSQL, Oracle, SQLite). Features schema comparison, data transformation, and validation.
+
+🎓 44. DSA Visualizer
+Status: in-progress
+🧰 C++ (backend), GTK (frontend), SFML
+📌 Interactive visualization tool for Data Structures and Algorithms demonstrating sorting, searching, graph traversals, and tree operations with step-by-step animation.
+
+🏪 45. Retail Store Manager
+Status: in-progress
+🧰 Python, Django, PostgreSQL, Bootstrap
+📌 Complete retail management system with inventory, sales, customer management, supplier tracking, purchase orders, and analytics dashboard. Features role-based access and reporting.
+
+🎵 46. Music Streaming App API
+Status: completed
+🧰 FastAPI, Python, PostgreSQL, Redis, Spotify API
+📌 Backend API for music streaming with user playlists, track management, recommendation engine, and social features. Integrates with third-party music APIs.
+
+📅 47. Event Management System
+Status: in-progress
+🧰 Spring Boot, React, PostgreSQL, Stripe API
+📌 Complete event management platform with event creation, ticketing, payment processing, attendee tracking, and venue management. Features QR code check-in system.
+
+📝 48. Blog Platform
+Status: completed
+🧰 Next.js, Node.js, Express.js, PostgreSQL
+📌 Full-featured blogging platform with markdown support, comments, categories, tags, search functionality, and SEO optimization. Features user profiles and content management.
+
+🧠 49. AI Chatbot Assistant
+Status: in-progress
+🧰 Python, FastAPI, OpenAI API, React, Redis
+📌 AI-powered chatbot with custom knowledge base integration, conversation history, sentiment analysis, and multi-language support. Uses OpenAI GPT for intelligent responses.
+
+📎 50. Document Management System
+Status: completed
+🧰 Java, Spring Boot, PostgreSQL, Elasticsearch
+📌 Enterprise document management with version control, OCR integration, full-text search, document sharing, and access permissions. Features audit logging and digital signatures.

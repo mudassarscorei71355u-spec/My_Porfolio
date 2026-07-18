@@ -1,0 +1,358 @@
+@media (min-width: 640px) {
+  .projects-grid, .courses-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .stat-grid {
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  .stat-grid .info-card {
+    flex: 1;
+  }
+}
+
+@media (min-width: 768px) {
+  .mobile-menu-btn {
+    display: none;
+  }
+
+  .nav-links {
+    display: flex !important;
+    width: auto;
+    flex-direction: row;
+    gap: 28px;
+    padding: 0;
+    border-top: none;
+  }
+
+  .nav-links a {
+    padding: 8px 0;
+  }
+
+  .hero-grid {
+    flex-direction: row;
+    text-align: left;
+    align-items: center;
+    gap: 3rem;
+  }
+
+  .btn-group {
+    justify-content: flex-start;
+  }
+
+  .skills-wrapper {
+    flex-direction: row;
+    gap: 40px;
+  }
+
+  .skills-category {
+    flex: 1;
+  }
+
+  .contact-info {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .two-columns {
+    flex-direction: row;
+  }
+
+  .two-columns div {
+    flex: 1;
+  }
+
+  .cv-body-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+
+  .skills-grid-cv {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .cv-projects-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .cv-learnings-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .section {
+    padding: 70px 0;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  .avatar-circle {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .projects-grid, .courses-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .container {
+    padding: 0 32px;
+  }
+
+  .nav-container {
+    padding: 18px 32px;
+  }
+
+  .nav-links {
+    gap: 36px;
+  }
+
+  h1 {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 620px) {
+  .password-form .input-row {
+    flex-direction: column;
+  }
+
+  .management-access-section {
+    padding: 1.2rem;
+  }
+
+  .course-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .project-status {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 768px) {
+  .results-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stat-number {
+    font-size: 1.5rem;
+  }
+
+  .pdf-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pdf-actions {
+    justify-content: center;
+  }
+
+  .result-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cgpa-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .marks-table {
+    font-size: 0.7rem;
+  }
+
+  .marks-table th,
+  .marks-table td {
+    padding: 0.3rem 0.4rem;
+  }
+
+  .cv-header-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .cv-contact-info {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .cv-item-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .cv-container {
+    padding: 1rem;
+  }
+
+  .cv-two-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .page-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-group .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .projects-grid,
+  .courses-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-container {
+    padding: 12px 16px;
+  }
+
+  .mobile-menu-btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .stats-toggle-group {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .stats-toggle-btn {
+    flex: 1 1 0;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .management-controls {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .management-controls .btn {
+    flex: 1 1 calc(50% - 0.25rem);
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .stat-grid {
+    flex-direction: column;
+  }
+
+  .cv-name {
+    font-size: 1.4rem;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .contact-item {
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+  }
+
+  .results-stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+  }
+
+  .stat-card {
+    padding: 1rem;
+  }
+
+  .stat-number {
+    font-size: 1.2rem;
+  }
+
+  .student-info {
+    grid-template-columns: 1fr;
+    font-size: 0.75rem;
+    padding: 0.6rem;
+  }
+
+  .certificate-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0.8rem;
+  }
+
+  .certificate-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+
+  .certificate-header {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .certificate-actions {
+    justify-content: center;
+  }
+
+  .certificate-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .certificate-media {
+    width: 100%;
+    height: 140px;
+  }
+
+  .cv-learning-group {
+    padding: 0.4rem 0.6rem;
+  }
+
+  .cv-learning-tag {
+    font-size: 0.6rem;
+    padding: 1px 6px;
+    margin: 1px 2px;
+  }
+
+  .cv-item {
+    padding: 0.6rem;
+  }
+
+  .cv-item-title {
+    font-size: 0.85rem;
+  }
+
+  .stats-toggle-btn {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.8rem;
+  }
+}

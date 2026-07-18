@@ -1,0 +1,11 @@
+# Certificates
+
+Use this file to add certificate information later.
+
+## Certificate 1
+- Name: Example Certificate
+- Issuer: Example Organization
+- Date: 2025-01
+- Status: completed
+- URL: https://example.com
+- Image: 

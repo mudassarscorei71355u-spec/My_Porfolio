@@ -1,0 +1,276 @@
+# 📚 Learning Roadmap
+
+## Learning 1 (Months 1–3): Python Programming Mastery
+
+- Python Fundamentals
+- Object-Oriented Programming (Python)
+- File Handling & Exception Handling
+- Python Data Analysis
+- Pandas
+- NumPy
+- Matplotlib
+- Seaborn
+- Plotly
+- Python GUI Development
+- Tkinter
+- CustomTkinter
+- PyQt
+- Python Automation
+- BeautifulSoup
+- Selenium
+- OS Automation
+- Python Excel Automation
+- OpenPyXL
+- XlsxWriter
+- Pandas Excel Processing
+- Python Database Libraries
+- SQLAlchemy
+- cx_Oracle
+- oracledb
+- Flask
+- FastAPI
+- Django
+- REST APIs with Python
+- Jupyter Notebook
+- Scikit-learn
+- TensorFlow Basics
+
+---
+
+## Learning 2 (Months 4–6): Java Programming + OOP
+
+- Core Java
+- Object-Oriented Programming (OOP)
+- Java Collections Framework
+- Design Patterns
+- Java JSON Processing
+- Jackson
+- Gson
+- JSON Data Binding
+- Java Desktop Development
+- Swing
+- JavaFX
+- GTK with Java
+
+---
+
+## Learning 3 (Months 7–9): Data Structures & Algorithms (DSA)
+
+### Java DSA
+
+- Arrays
+- Strings
+- Linked Lists
+- Stacks
+- Queues
+- Trees
+- Binary Search Trees
+- Heaps
+- Graphs
+- Hash Tables
+- Sorting Algorithms
+- Searching Algorithms
+- Recursion
+- Backtracking
+- Divide & Conquer
+- Dynamic Programming
+- Greedy Algorithms
+- Graph Algorithms
+- Bit Manipulation
+
+### C++ DSA
+
+- Core C++
+- Data Structures in C++
+- Algorithms in C++
+- STL (Standard Template Library)
+
+---
+
+## Learning 4 (Months 10–12): Frontend Development
+
+- HTML5
+- Semantic HTML
+- CSS3
+- Responsive Design
+- Bootstrap
+- Tailwind CSS
+- JavaScript (ES6+)
+- DOM Manipulation
+- React.js
+- React Context API
+- Redux Toolkit
+- Zustand
+- Next.js
+- Vue.js
+- Svelte
+- Lazy Loading
+- Code Splitting
+- Image Optimization
+- Core Web Vitals
+
+---
+
+## Learning 5 (Months 13–15): Backend Development
+
+### Node.js Backend
+
+- Node.js
+- Express.js
+- NestJS
+- Next.js API Routes
+
+### Java Backend
+
+- Spring Boot
+- Spring MVC
+- Spring Data JPA
+- Spring Security
+- Java Servlets
+- JSP
+- REST APIs with Spring Boot
+
+### Backend Concepts
+
+- REST API Development
+- API Design Principles
+- HTTP Methods
+- HTTP Status Codes
+- Swagger/OpenAPI
+- JWT Authentication
+- OAuth 2.0
+- Session Management
+- Role-Based Access Control (RBAC)
+- WebSocket Development
+- Socket.io
+- Real-Time Communication
+- API Testing
+- Postman
+- Insomnia
+- REST Client
+
+---
+
+## Learning 6 (Months 16–18): Database Engineering
+
+- SQL Fundamentals
+- PostgreSQL
+- Complex Queries
+- Stored Procedures
+- Triggers & Functions
+- Indexing & Performance
+- Oracle SQL
+- PL/SQL Programming
+- Oracle Database Administration
+- Oracle SQL Tuning
+- MongoDB
+- Mongoose ODM
+- Aggregation Pipeline
+- Schema Design
+- SQLite
+- SQL Optimization
+- Database Design
+- Entity-Relationship (ER) Diagrams
+- Normalization
+- Database Indexing Strategies
+- Query Optimization
+- JDBC
+- JPA
+- Hibernate ORM
+
+---
+
+## Learning 7 (Months 19–21): C++ Programming & System Development
+
+- Core C++ Programming
+- Object-Oriented Programming (C++)
+- STL
+- File Handling
+- Memory Management
+- Multi-threading
+- Socket Programming
+- HTTP Client/Server
+- Network Protocols
+- Qt Framework
+- GTK+
+- wxWidgets
+
+---
+
+## Learning 8 (Months 22–24): DevOps & Cloud Engineering
+
+- Linux/Unix CLI
+- Shell Scripting
+- System Administration
+- Git Fundamentals
+- GitHub Workflow
+- Branching Strategies
+- Pull Requests & Code Review
+- Docker
+- Docker Compose
+- Dockerfile
+- Kubernetes
+- Pods
+- Services
+- Deployments
+- Helm Charts
+- GitHub Actions
+- Jenkins
+- Automated Testing
+- Prometheus
+- Grafana
+- ELK Stack
+- AWS (EC2, S3, RDS)
+- Azure Fundamentals
+- Google Cloud Platform (GCP)
+
+---
+
+## Learning 9 (Months 25–27): Artificial Intelligence & Machine Learning
+
+- AI-Assisted Learning
+- Prompt Engineering
+- ChatGPT Integration
+- OpenAI API
+- Machine Learning Basics
+- Supervised Learning
+- Unsupervised Learning
+- Neural Networks
+- Computer Vision
+- OpenCV
+- Image Processing
+- Face Detection
+- Natural Language Processing (NLP)
+- NLTK
+- Text Processing
+- Sentiment Analysis
+
+---
+
+## Learning 10 (Months 28–30): Mobile Development
+
+- React Native
+- Flutter
+- Android Development (Kotlin)
+- iOS Development (Swift)
+
+---
+
+## Learning 11 (Months 31–33): Professional Tools & Software Engineering
+
+- VS Code
+- IntelliJ IDEA
+- GitKraken
+- Figma (UI/UX Basics)
+- Postman
+- Markdown
+- JSON
+- XML
+- YAML
+- Environment Variables
+- Web Security
+- CORS
+- HTTPS & SSL/TLS
+- Performance Optimization
+- Scalability
+- Load Balancing

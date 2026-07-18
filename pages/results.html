@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Academic Results | Mudassar Hussain</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header>
+    <div class="container nav-container">
+      <div class="logo-svg">
+        <svg width="160" height="48" viewBox="0 0 260 90" fill="none" xmlns="http://www.w3.org/2000/svg" style="height: 44px; width: auto;">
+          <rect width="260" height="90" rx="14" fill="#0F172A"/>
+          <path d="M28 45L45 27" stroke="#38BDF8" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M28 45L45 63" stroke="#38BDF8" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M72 22L62 68" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M90 27L107 45" stroke="#38BDF8" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M90 63L107 45" stroke="#38BDF8" stroke-width="4.5" stroke-linecap="round"/>
+          <text x="130" y="56" font-family="Poppins, Arial, sans-serif" font-size="32" font-weight="700" fill="white">MH</text>
+          <rect x="185" y="32" width="5" height="28" rx="2" fill="#38BDF8">
+            <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+          </rect>
+        </svg>
+      </div>
+      <div class="header-right">
+        <button class="theme-toggle" id="themeToggle" aria-label="Switch Theme">
+          <i class="fas fa-moon"></i>
+        </button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="learning.html">Learning</a></li>
+        <li><a href="results.html" class="active-nav">Results</a></li>
+        <li><a href="cv.html">CV</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <section class="section page-header">
+      <div class="container">
+        <h1><i class="fas fa-graduation-cap"></i> Academic Results</h1>
+        <p>Complete Academic Record · Matric to Bachelor's</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <!-- Quick Stats -->
+        <div class="results-stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">🎓</div>
+            <div class="stat-number">1010/1100</div>
+            <div class="stat-label">Matric (SSC) · Grade A1</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">📚</div>
+            <div class="stat-number">889/1100</div>
+            <div class="stat-label">Pre-Engineering (HSSC) · 1st Annual 2024</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🏆</div>
+            <div class="stat-number">3.21</div>
+            <div class="stat-label">Current CGPA · UET Taxila</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">📅</div>
+            <div class="stat-number">51</div>
+            <div class="stat-label">Credit Hours Completed</div>
+          </div>
+        </div>
+
+        <!-- PDF Viewer -->
+        <div class="pdf-container">
+          <div class="pdf-toolbar">
+            <h3><i class="fas fa-file-pdf"></i> UET Taxila Semester Results</h3>
+            <div class="pdf-actions">
+              <button class="btn btn-outline" onclick="document.getElementById('pdfFrame').print()">
+                <i class="fas fa-print"></i> Print
+              </button>
+              <button class="btn btn-outline" onclick="window.open('../pdf/Student%20Academic%20Record%20_%20Academics%20Management%20System.pdf', '_blank')">
+                <i class="fas fa-external-link-alt"></i> Full Screen
+              </button>
+              <button class="btn btn-primary" onclick="downloadPDF()">
+                <i class="fas fa-download"></i> Download
+              </button>
+            </div>
+          </div>
+          <iframe 
+            id="pdfFrame"
+            src="../pdf/Student%20Academic%20Record%20_%20Academics%20Management%20System.pdf#toolbar=1" 
+            width="100%" 
+            height="700px"
+            style="border: 1px solid var(--border-color); border-radius: 12px; background: white;"
+            allow="fullscreen"
+          ></iframe>
+          <p style="margin-top: 10px; color: var(--text-muted); font-size: 0.85rem; text-align: center;">
+            <i class="fas fa-info-circle"></i> If PDF doesn't load, 
+            <a href="../pdf/Student%20Academic%20Record%20_%20Academics%20Management%20System.pdf" target="_blank" style="color: var(--accent);">click here to open directly</a>
+          </p>
+        </div>
+
+        <!-- Matric (SSC) Results -->
+        <div class="result-card">
+          <div class="result-card-header">
+            <div>
+              <h3><i class="fas fa-certificate"></i> Secondary School Certificate (SSC) · Matric</h3>
+              <span class="badge grade-a1">Grade A1</span>
+            </div>
+            <span class="exam-year">Annual 2022</span>
+          </div>
+          <div class="result-card-body">
+            <div class="student-info">
+              <p><strong>Student:</strong> MUDASSAR HUSSAIN</p>
+              <p><strong>Father:</strong> MUHAMMAD NAEEM</p>
+              <p><strong>Roll No:</strong> 1023585</p>
+              <p><strong>Registration No:</strong> 2223141009</p>
+              <p><strong>Date of Birth:</strong> 18-06-2006</p>
+              <p><strong>Institution:</strong> Army Public School Istaqlal, Allama Iqbal Camp, Kallar Kahar</p>
+            </div>
+            <div class="marks-table-wrapper">
+              <table class="marks-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Subject</th>
+                    <th>Max Marks</th>
+                    <th>Obtained</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>1</td><td>English (Compulsory)</td><td>150</td><td>132</td></tr>
+                  <tr><td>2</td><td>Urdu (Compulsory)</td><td>150</td><td>139</td></tr>
+                  <tr><td>3</td><td>Islamiyat (Compulsory)</td><td>100</td><td>96</td></tr>
+                  <tr><td>4</td><td>Pakistan Studies</td><td>100</td><td>91</td></tr>
+                  <tr><td>5</td><td>Mathematics</td><td>150</td><td>145</td></tr>
+                  <tr><td>6</td><td>Physics</td><td>150</td><td>137</td></tr>
+                  <tr><td>7</td><td>Chemistry</td><td>150</td><td>134</td></tr>
+                  <tr><td>8</td><td>Biology</td><td>150</td><td>136</td></tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="3"><strong>Total</strong></td>
+                    <td><strong>1010 / 1100</strong></td>
+                  </tr>
+                  <tr>
+                    <td colspan="4" class="remarks"><strong>Remarks:</strong> One Thousand Ten Only · Grade A1</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pre-Engineering (HSSC) Results -->
+        <div class="result-card">
+          <div class="result-card-header">
+            <div>
+              <h3><i class="fas fa-flask"></i> Higher Secondary School Certificate (HSSC) · Pre-Engineering</h3>
+              <span class="badge grade-a">Grade A</span>
+            </div>
+            <span class="exam-year">1st Annual 2024</span>
+          </div>
+          <div class="result-card-body">
+            <div class="student-info">
+              <p><strong>Student:</strong> MUDASSAR HUSSAIN</p>
+              <p><strong>Father:</strong> MUHAMMAD NAEEM</p>
+              <p><strong>Roll No:</strong> 518595</p>
+              <p><strong>Registration No:</strong> 2223141009</p>
+              <p><strong>Group:</strong> Pre-Engineering</p>
+              <p><strong>Institution:</strong> Army Public School &amp; College Istaqlal, Allama Iqbal Garrison, Kallar Kahar</p>
+            </div>
+            <div class="marks-table-wrapper">
+              <table class="marks-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Subject</th>
+                    <th>Marks</th>
+                    <th>Practical</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>1</td><td>English - I (Comp.)</td><td>81</td><td>-</td></tr>
+                  <tr><td>2</td><td>English - II (Comp.)</td><td>73</td><td>-</td></tr>
+                  <tr><td>3</td><td>Urdu - I (Comp.)</td><td>90</td><td>-</td></tr>
+                  <tr><td>4</td><td>Urdu - II (Comp.)</td><td>77</td><td>-</td></tr>
+                  <tr><td>5</td><td>Islamic Education (Comp.)</td><td>48</td><td>-</td></tr>
+                  <tr><td>6</td><td>Pakistan Studies (Comp.)</td><td>35</td><td>-</td></tr>
+                  <tr><td>7</td><td>Mathematics - I</td><td>93</td><td>-</td></tr>
+                  <tr><td>8</td><td>Mathematics - II</td><td>72</td><td>-</td></tr>
+                  <tr><td>9</td><td>Physics - I (Th.)</td><td>73</td><td>-</td></tr>
+                  <tr><td>10</td><td>Physics - II (Th.)</td><td>57</td><td>30</td></tr>
+                  <tr><td>11</td><td>Chemistry - I (Th.)</td><td>70</td><td>-</td></tr>
+                  <tr><td>12</td><td>Chemistry - II (Th.)</td><td>60</td><td>30</td></tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="3"><strong>Total</strong></td>
+                    <td><strong>889 / 1100</strong></td>
+                  </tr>
+                  <tr>
+                    <td colspan="4" class="remarks"><strong>Remarks:</strong> Pass with 889 Marks</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <div class="disclaimer">
+              <p><i class="fas fa-info-circle"></i> Disclaimer: This result gazette is issued provisionally, errors and omission excepted, as a notice only. Any entry appearing in this notification does not itself confer any right or privilege on a candidate for the grant of certificate which will be issued under the rules/regulations on the basis of the original record of the Board's office.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- UET Taxila CGPA Summary -->
+        <div class="result-card">
+          <div class="result-card-header">
+            <div>
+              <h3><i class="fas fa-university"></i> UET Taxila · Bachelor of Science in Software Engineering</h3>
+              <span class="badge current">Current</span>
+            </div>
+            <span class="exam-year">2024 – Present</span>
+          </div>
+          <div class="result-card-body">
+            <div class="cgpa-grid">
+              <div class="cgpa-item">
+                <span class="cgpa-value">3.21</span>
+                <span class="cgpa-label">Current CGPA</span>
+                <span class="cgpa-detail">51 Credit Hours</span>
+              </div>
+              <div class="cgpa-item">
+                <span class="cgpa-value">3.34</span>
+                <span class="cgpa-label">Previous CGPA</span>
+                <span class="cgpa-detail">33 Credit Hours</span>
+              </div>
+              <div class="cgpa-item">
+                <span class="cgpa-value">3</span>
+                <span class="cgpa-label">Semesters Completed</span>
+                <span class="cgpa-detail">4th Semester In Progress</span>
+              </div>
+              <div class="cgpa-item">
+                <span class="cgpa-value">A</span>
+                <span class="cgpa-label">Overall Grade</span>
+                <span class="cgpa-detail">Good Standing</span>
+              </div>
+            </div>
+            <div style="text-align: center; margin-top: 1rem;">
+              <a href="../pdf/Student%20Academic%20Record%20_%20Academics%20Management%20System.pdf" target="_blank" class="btn btn-primary">
+                <i class="fas fa-file-pdf"></i> View Full Semester Results (PDF)
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Mudassar Hussain — Academic Results</p>
+  </footer>
+
+  <div id="customToast" class="custom-toast"></div>
+  <script>
+    function downloadPDF() {
+      const link = document.createElement('a');
+      link.href = '../pdf/Student Academic Record _ Academics Management System.pdf';
+      link.download = 'Mudassar_Hussain_Academic_Results.pdf';
+      link.click();
+      showToast('📄 Downloading PDF...');
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('customToast');
+      toast.textContent = message;
+      toast.style.opacity = '1';
+      setTimeout(() => {
+        toast.style.opacity = '0';
+      }, 2000);
+    }
+
+    // Theme toggle for results page
+    document.addEventListener('DOMContentLoaded', function() {
+      const themeToggle = document.getElementById('themeToggle');
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+          document.body.classList.toggle('dark');
+          const isDark = document.body.classList.contains('dark');
+          localStorage.setItem('theme', isDark ? 'dark' : 'light');
+          const icon = themeToggle.querySelector('i');
+          if (isDark) {
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+          } else {
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+          }
+        });
+      }
+      
+      // Mobile menu
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      const navLinks = document.getElementById('navLinks');
+      if (mobileMenuBtn && navLinks) {
+        mobileMenuBtn.addEventListener('click', function() {
+          navLinks.classList.toggle('show');
+        });
+        navLinks.querySelectorAll('a').forEach(function(link) {
+          link.addEventListener('click', function() {
+            navLinks.classList.remove('show');
+          });
+        });
+      }
+
+      // Theme init
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark');
+        const themeToggle = document.getElementById('themeToggle');
+        if (themeToggle) {
+          const icon = themeToggle.querySelector('i');
+          icon.classList.remove('fa-moon');
+          icon.classList.add('fa-sun');
+        }
+      }
+    });
+  </script>
+</body>
+</html>

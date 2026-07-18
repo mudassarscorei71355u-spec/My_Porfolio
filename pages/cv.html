@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>CV - Mudassar Hussain | Software Engineer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header>
+    <div class="container nav-container">
+      <div class="logo-svg">
+        <svg width="160" height="48" viewBox="0 0 260 90" fill="none" xmlns="http://www.w3.org/2000/svg" style="height: 44px; width: auto;">
+          <rect width="260" height="90" rx="14" fill="#0F172A"/>
+          <path d="M28 45L45 27" stroke="#38BDF8" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M28 45L45 63" stroke="#38BDF8" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M72 22L62 68" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M90 27L107 45" stroke="#38BDF8" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M90 63L107 45" stroke="#38BDF8" stroke-width="4.5" stroke-linecap="round"/>
+          <text x="130" y="56" font-family="Poppins, Arial, sans-serif" font-size="32" font-weight="700" fill="white">MH</text>
+          <rect x="185" y="32" width="5" height="28" rx="2" fill="#38BDF8">
+            <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+          </rect>
+        </svg>
+      </div>
+      <div class="header-right">
+        <button class="theme-toggle" id="themeToggle" aria-label="Switch Theme">
+          <i class="fas fa-moon"></i>
+        </button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="learning.html">Learning</a></li>
+        <li><a href="results.html">Results</a></li>
+        <li><a href="cv.html" class="active-nav">CV</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <section class="section page-header">
+      <div class="container">
+        <div class="cv-header-actions">
+          <div>
+            <h1><i class="fas fa-file-alt"></i> Curriculum Vitae</h1>
+            <p>Professional resume highlighting education, experience, skills, and achievements</p>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.3rem;">
+              <i class="fas fa-sync-alt"></i> Projects &amp; learnings auto-loaded from txt/ files
+            </p>
+          </div>
+          <button id="downloadCVBtn" class="btn btn-primary"><i class="fas fa-download"></i> Download PDF</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CV CONTENT - BALANCED LAYOUT ========== -->
+    <section class="section cv-section" id="cvContent">
+      <div class="container">
+        <div class="cv-container">
+          <!-- HEADER -->
+          <div class="cv-header">
+            <div class="cv-header-info">
+              <div class="avatar-circle" style="margin: 0 auto 1rem auto;">
+                <img src="../img/my_img.jpg" alt="Mudassar Hussain" class="profile-img" onerror="this.src='https://placehold.co/400x400?text=Mudassar'">
+              </div>
+              <h1 class="cv-name">Mudassar Hussain</h1>
+              <h2 class="cv-title">Software Engineering Student | Full-Stack Developer</h2>
+              <div class="cv-contact-info">
+                <span><i class="fas fa-phone"></i> 0336-9483957</span>
+                <span><i class="fas fa-envelope"></i> mudssars.core.i7.1355u@gmail.com</span>
+                <span><i class="fas fa-map-marker-alt"></i> VPO Miani, Tehsil Kallar Kahar, Chakwal</span>
+                <span><i class="fab fa-github"></i> github.com/mudassarscorei71355u-spec</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- PROFESSIONAL SUMMARY - FULL WIDTH -->
+          <div class="cv-section-block cv-summary-block" style="grid-column: 1 / -1;">
+            <h3><i class="fas fa-user-astronaut"></i> Professional Summary</h3>
+            <p>Motivated Software Engineering student at UET Taxila with strong foundations in programming, databases, and full-stack development. Passionate about building robust backend systems and elegant frontend experiences. Quick learner with excellent problem-solving abilities and a collaborative mindset.</p>
+          </div>
+
+          <!-- TWO COLUMN LAYOUT -->
+          <div class="cv-body-grid">
+            <!-- ===== LEFT COLUMN ===== -->
+            <div class="cv-column">
+              <!-- EDUCATION -->
+              <div class="cv-section-block">
+                <h3><i class="fas fa-graduation-cap"></i> Education</h3>
+                <div class="cv-item">
+                  <div class="cv-item-header">
+                    <span class="cv-item-title">B.S. Software Engineering</span>
+                    <span class="cv-item-date">Aug 2024 – Present</span>
+                  </div>
+                  <div class="cv-item-subtitle">UET Taxila</div>
+                  <p style="margin-top: 4px; font-size: 0.85rem; color: var(--text-muted);">CGPA: 3.21 · 51 Credit Hours · 3 Semesters</p>
+                </div>
+                <div class="cv-item">
+                  <div class="cv-item-header">
+                    <span class="cv-item-title">F.Sc Pre-Engineering</span>
+                    <span class="cv-item-date">2022 – 2024</span>
+                  </div>
+                  <div class="cv-item-subtitle">APS &amp; AIG, Kallar Kahar</div>
+                  <p style="margin-top: 4px; font-size: 0.85rem; color: var(--text-muted);">Grade: 889/1100 (80%)</p>
+                </div>
+                <div class="cv-item">
+                  <div class="cv-item-header">
+                    <span class="cv-item-title">Matric (SSC)</span>
+                    <span class="cv-item-date">2022</span>
+                  </div>
+                  <div class="cv-item-subtitle">Army Public School, Kallar Kahar</div>
+                  <p style="margin-top: 4px; font-size: 0.85rem; color: var(--text-muted);">Grade: 1010/1100 (A1)</p>
+                </div>
+              </div>
+
+              <!-- TECHNICAL SKILLS -->
+              <div class="cv-section-block">
+                <h3><i class="fas fa-code"></i> Technical Skills</h3>
+                <div id="cvSkillsContainer" class="skills-grid-cv"></div>
+              </div>
+
+              <!-- LANGUAGES & INTERESTS -->
+              <div class="cv-section-block">
+                <h3><i class="fas fa-heart"></i> Languages &amp; Interests</h3>
+                <div class="cv-two-columns">
+                  <div>
+                    <strong>Languages:</strong>
+                    <ul>
+                      <li>Urdu (Native)</li>
+                      <li>English (Fluent)</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <strong>Interests:</strong>
+                    <ul>
+                      <li>Gaming</li>
+                      <li>Cricket</li>
+                      <li>Basketball</li>
+                      <li>Programming</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ===== RIGHT COLUMN ===== -->
+            <div class="cv-column">
+              <!-- FEATURED PROJECTS -->
+              <div class="cv-section-block">
+                <h3><i class="fas fa-laptop-code"></i> Featured Projects</h3>
+                <div id="cvProjectsContainer" class="cv-projects-grid"></div>
+              </div>
+
+              <!-- LEARNING HIGHLIGHTS - CONDENSED -->
+              <div class="cv-section-block">
+                <h3><i class="fas fa-graduation-cap"></i> Learning Highlights</h3>
+                <div class="certifications-list" id="cvLearningContainer"></div>
+                <p style="margin-top: 8px; color: var(--text-muted); font-size: 0.7rem;">
+                  <i class="fas fa-info-circle"></i> Auto-loaded from txt/all_learnings.txt
+                  <span id="learningCount"></span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Mudassar Hussain — Professional CV</p>
+  </footer>
+
+  <div id="customToast" class="custom-toast"></div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="../js/manager.js"></script>
+  <script src="../js/learning-manager.js"></script>
+  <script src="../js/projects-manager.js"></script>
+  <script src="../js/file-importer.js"></script>
+  <script src="../js/data-loader.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>

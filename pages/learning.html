@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Courses & Learning | Mudassar Hussain</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header>
+    <div class="container nav-container">
+      <div class="logo-svg">
+        <svg width="160" height="48" viewBox="0 0 260 90" fill="none" xmlns="http://www.w3.org/2000/svg" style="height: 44px; width: auto;">
+          <rect width="260" height="90" rx="14" fill="#0F172A"/>
+          <path d="M28 45L45 27" stroke="#38BDF8" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M28 45L45 63" stroke="#38BDF8" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M72 22L62 68" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M90 27L107 45" stroke="#38BDF8" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M90 63L107 45" stroke="#38BDF8" stroke-width="4.5" stroke-linecap="round"/>
+          <text x="130" y="56" font-family="Poppins, Arial, sans-serif" font-size="32" font-weight="700" fill="white">MH</text>
+          <rect x="185" y="32" width="5" height="28" rx="2" fill="#38BDF8">
+            <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+          </rect>
+        </svg>
+      </div>
+      <div class="header-right">
+        <button class="theme-toggle" id="themeToggle" aria-label="Switch Theme">
+          <i class="fas fa-moon"></i>
+        </button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="learning.html" class="active-nav">Learning</a></li>
+        <li><a href="results.html">Results</a></li>
+        <li><a href="cv.html">CV</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <section class="section page-header">
+      <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <h1><i class="fas fa-graduation-cap"></i> My Learning Journey</h1>
+            <p>Courses completed through YouTube, AI assistance & self-learning</p>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.3rem;">
+              <i class="fas fa-sync-alt"></i> Auto-loaded from txt/all_learnings.txt
+            </p>
+          </div>
+          
+          <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; align-items: center;">
+            <span class="course-status completed">✅ Completed</span>
+            <span class="course-status in-progress">🔄 In Progress</span>
+            <!-- Management Controls -->
+            <div class="management-controls" id="learningManagementControls" style="display: none; gap: 0.5rem; flex-wrap: wrap;">
+              <button class="btn btn-primary btn-sm" id="showAddLearningBtn"><i class="fas fa-plus"></i> Add</button>
+              <button class="btn btn-outline btn-sm" id="showEditLearningBtn"><i class="fas fa-edit"></i> Edit</button>
+              <button class="btn btn-danger btn-sm" id="showDeleteLearningBtn"><i class="fas fa-trash"></i> Delete</button>
+              <button class="btn btn-outline btn-sm" id="showImportLearningBtn"><i class="fas fa-file-import"></i> Import</button>
+                <!-- Certificate button removed to avoid duplication with the Certificates tab -->
+            </div>
+            </div>
+            <span class="lock-status" id="lockStatus" style="font-weight: 500;">🔒 Locked</span>
+          </div>
+          <div class="page-header-actions">
+            <div class="stats-toggle-group" role="tablist" aria-label="Learning stats view" style="margin-top:40px;">
+              <button type="button" class="stats-toggle-btn active" data-view="learning" aria-pressed="true">Learnings</button>
+              <button type="button" class="stats-toggle-btn" data-view="certificate" aria-pressed="false">Certificates</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Learning Stats -->
+    <section class="section stats-section" id="learningStatsSection">
+      <div class="container">
+        <div id="learningStats" class="results-stats-grid"></div>
+      </div>
+    </section>
+        <!-- Certificate Stats -->
+    <section class="section stats-section" id="certificateStatsSection" style="display: none;">
+      <div class="container">
+        <div id="certificateStats" class="results-stats-grid"></div>
+      </div>
+    </section>
+
+    <!-- Add Learning Form (hidden by default) -->
+    <section class="section" id="addLearningSection" style="display: none; padding-top: 0;">
+      <div class="container">
+        <div class="page-form-card add-learning-wrapper">
+          <h3><i class="fas fa-plus-circle"></i> Add New Learning</h3>
+          <div class="form-group">
+            <label for="learningInputPage">📚 What did you learn?</label>
+            <input type="text" id="learningInputPage" placeholder="e.g., Docker, Kubernetes, TypeScript, GraphQL" />
+          </div>
+          <div class="form-group">
+            <label for="categorySelectPage">Category</label>
+            <select id="categorySelectPage">
+              <option value="core">Core Skills</option>
+              <option value="tools">Tools & Frameworks</option>
+              <option value="cert">Certifications</option>
+            </select>
+          </div>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button class="btn btn-primary" id="addLearningPageBtn"><i class="fas fa-plus"></i> Add Learning</button>
+            <button class="btn btn-outline" id="cancelAddLearningBtn">Cancel</button>
+          </div>
+          <div id="learningPageMessage" style="margin-top: 0.5rem; font-size: 0.9rem;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Edit Learning Form (hidden by default) -->
+    <section class="section" id="editLearningSection" style="display: none; padding-top: 0;">
+      <div class="container">
+        <div class="page-form-card add-learning-wrapper">
+          <h3><i class="fas fa-edit"></i> Edit Learning</h3>
+          <div class="form-group">
+            <label for="editLearningSelect">Select Learning to Edit</label>
+            <select id="editLearningSelect" style="width:100%; padding:0.7rem 1rem; border:1px solid var(--border-color); border-radius:12px; background:var(--bg-primary); color:var(--text-primary);"></select>
+          </div>
+          <div class="form-group">
+            <label for="editLearningName">Learning Name</label>
+            <input type="text" id="editLearningName" placeholder="Enter updated name" />
+          </div>
+          <div class="form-group">
+            <label for="editLearningSkill">Skills/Details</label>
+            <input type="text" id="editLearningSkill" placeholder="e.g., Python, Django, REST APIs" />
+          </div>
+          <div class="form-group">
+            <label for="editLearningCategory">Category</label>
+            <select id="editLearningCategory">
+              <option value="core">Core Skills</option>
+              <option value="tools">Tools & Frameworks</option>
+              <option value="cert">Certifications</option>
+            </select>
+          </div>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button class="btn btn-primary" id="saveEditLearningBtn"><i class="fas fa-save"></i> Save Changes</button>
+            <button class="btn btn-outline" id="cancelEditLearningBtn">Cancel</button>
+          </div>
+          <div id="editLearningMessage" style="margin-top: 0.5rem; font-size: 0.9rem;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Delete Learning Section (hidden by default) -->
+    <section class="section" id="deleteLearningSection" style="display: none; padding-top: 0;">
+      <div class="container">
+        <div class="add-learning-wrapper" style="background: var(--bg-secondary); padding: 1.5rem; border-radius: 20px; border: 1px solid var(--border-color);">
+          <h3><i class="fas fa-trash"></i> Delete Learning</h3>
+          <p style="color: var(--text-muted); margin-bottom: 1rem;">Select a learning to delete. This action cannot be undone.</p>
+          <div class="form-group">
+            <label for="deleteLearningSelect">Select Learning to Delete</label>
+            <select id="deleteLearningSelect" style="width:100%; padding:0.7rem 1rem; border:1px solid var(--border-color); border-radius:12px; background:var(--bg-primary); color:var(--text-primary);"></select>
+          </div>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button class="btn btn-danger" id="confirmDeleteLearningBtn"><i class="fas fa-trash"></i> Confirm Delete</button>
+            <button class="btn btn-outline" id="cancelDeleteLearningBtn">Cancel</button>
+          </div>
+          <div id="deleteLearningMessage" style="margin-top: 0.5rem; font-size: 0.9rem;"></div>
+        </div>
+      </div>
+    </section>
+        <!-- ========== NEW: CERTIFICATE SECTION ========== -->
+    <!-- Add Certificate Form (hidden by default) -->
+    <section class="section" id="addCertificateSection" style="display: none; padding-top: 0;">
+      <div class="container">
+        <div class="page-form-card add-learning-wrapper">
+          <h3><i class="fas fa-certificate"></i> Add New Certificate</h3>
+          <div class="form-group">
+            <label for="certificateNameInput">📜 Certificate Name</label>
+            <input type="text" id="certificateNameInput" placeholder="e.g., Full-Stack Web Development Certification" />
+          </div>
+          <div class="form-group">
+            <label for="certificateIssuerInput">🏛️ Issuing Organization</label>
+            <input type="text" id="certificateIssuerInput" placeholder="e.g., Coursera, Udemy, Google" />
+          </div>
+          <div class="form-group">
+            <label for="certificateDateInput">📅 Date Earned</label>
+            <input type="month" id="certificateDateInput" />
+          </div>
+          <div class="form-group">
+            <label for="certificateUrlInput">🔗 Certificate URL (optional)</label>
+            <input type="url" id="certificateUrlInput" placeholder="https://example.com/certificate" />
+          </div>
+          <div class="form-group">
+            <label for="certificateImageInput">🖼️ Upload Image (optional)</label>
+            <input type="file" id="certificateImageInput" accept="image/*" />
+            <div id="certificateImagePreview" class="certificate-preview"></div>
+          </div>
+          <div class="form-group">
+            <label for="certificateImagePathInput">📁 Image Path in Repo (optional)</label>
+            <input type="text" id="certificateImagePathInput" placeholder="certificate_img/your-image.png" />
+            <small style="display:block; margin-top:0.35rem; color: var(--text-muted);">Use a path like certificate_img/my-certificate.png if the image already exists in your GitHub repository.</small>
+          </div>
+          <div class="form-group">
+            <label for="certificateStatusSelect">📊 Status</label>
+            <select id="certificateStatusSelect">
+              <option value="completed">✅ Completed</option>
+              <option value="in-progress">🔄 In Progress</option>
+            </select>
+          </div>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button class="btn btn-primary" id="addCertificateBtn"><i class="fas fa-plus"></i> Add Certificate</button>
+            <button class="btn btn-outline" id="cancelAddCertificateBtn">Cancel</button>
+          </div>
+          <div id="certificateMessage" style="margin-top: 0.5rem; font-size: 0.9rem;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Edit Certificate Form (hidden by default) -->
+    <section class="section" id="editCertificateSection" style="display: none; padding-top: 0;">
+      <div class="container">
+        <div class="page-form-card add-learning-wrapper">
+          <h3><i class="fas fa-edit"></i> Edit Certificate</h3>
+          <input type="hidden" id="editCertificateId" />
+          <div class="form-group">
+            <label for="editCertificateNameInput">📜 Certificate Name</label>
+            <input type="text" id="editCertificateNameInput" placeholder="e.g., Full-Stack Web Development Certification" />
+          </div>
+          <div class="form-group">
+            <label for="editCertificateIssuerInput">🏛️ Issuing Organization</label>
+            <input type="text" id="editCertificateIssuerInput" placeholder="e.g., Coursera, Udemy, Google" />
+          </div>
+          <div class="form-group">
+            <label for="editCertificateDateInput">📅 Date Earned</label>
+            <input type="month" id="editCertificateDateInput" />
+          </div>
+          <div class="form-group">
+            <label for="editCertificateUrlInput">🔗 Certificate URL (optional)</label>
+            <input type="url" id="editCertificateUrlInput" placeholder="https://example.com/certificate" />
+          </div>
+          <div class="form-group">
+            <label for="editCertificateImageInput">🖼️ Upload Image (optional)</label>
+            <input type="file" id="editCertificateImageInput" accept="image/*" />
+            <div id="editCertificateImagePreview" class="certificate-preview"></div>
+          </div>
+          <div class="form-group">
+            <label for="editCertificateImagePathInput">📁 Image Path in Repo (optional)</label>
+            <input type="text" id="editCertificateImagePathInput" placeholder="certificate_img/your-image.png" />
+          </div>
+          <div class="form-group">
+            <label for="editCertificateStatusSelect">📊 Status</label>
+            <select id="editCertificateStatusSelect">
+              <option value="completed">✅ Completed</option>
+              <option value="in-progress">🔄 In Progress</option>
+            </select>
+          </div>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button class="btn btn-primary" id="saveEditCertificateBtn"><i class="fas fa-save"></i> Save Changes</button>
+            <button class="btn btn-outline" id="cancelEditCertificateBtn">Cancel</button>
+          </div>
+          <div id="editCertificateMessage" style="margin-top: 0.5rem; font-size: 0.9rem;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Certificate List Section -->
+    <section class="section" id="certificateListSection" style="display: none; padding-top: 0;">
+      <div class="container">
+        <div class="page-form-card add-learning-wrapper">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:0.75rem; flex-wrap:wrap;">
+            <h3><i class="fas fa-certificate"></i> My Certificates</h3>
+            <button class="btn btn-primary btn-sm" id="showAddCertificateBtn"><i class="fas fa-plus"></i> Add</button>
+          </div>
+          <div id="certificateListContainer" style="margin-top: 0.5rem;"></div>
+        </div>
+      </div>
+    </section>
+    <!-- ========== END CERTIFICATE SECTION ========== -->
+
+    <!-- Import Learning Section (hidden by default) -->
+    <section class="section" id="importLearningSection" style="display: none; padding-top: 0;">
+      <div class="container">
+        <div class="add-learning-wrapper" style="background: var(--bg-secondary); padding: 1.5rem; border-radius: 20px; border: 1px solid var(--border-color);">
+          <h3><i class="fas fa-file-import"></i> Import Learnings from File</h3>
+          <p style="color: var(--text-muted); margin-bottom: 1rem;">Import learnings from a .txt or .md file. The file should contain learning topics.</p>
+          <div id="learningImportArea" style="margin-top: 0.5rem;"></div>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem;">
+            <button class="btn btn-outline" id="cancelImportLearningBtn">Close</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Learning Grid -->
+    <section class="section" id="learningContentSection">
+      <div class="container">
+        <div class="courses-grid" id="coursesGrid"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Mudassar Hussain — Lifelong Learner</p>
+  </footer>
+
+  <div id="customToast" class="custom-toast"></div>
+  
+  <script src="../js/manager.js"></script>
+  <script src="../js/learning-manager.js"></script>
+  <script src="../js/projects-manager.js"></script>
+  <script src="../js/certificate-manager.js"></script>  <!-- NEW -->
+  <script src="../js/file-importer.js"></script>
+  <script src="../js/data-loader.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>
