@@ -594,20 +594,36 @@ function setupDownloadCV() {
         downloadBtn.disabled = true;
         downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
 
+        const pdfElement = element.cloneNode(true);
+        pdfElement.classList.add('pdf-layout');
+
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'absolute';
+        wrapper.style.left = '-9999px';
+        wrapper.style.top = '0';
+        wrapper.style.width = '1100px';
+        wrapper.style.maxWidth = '1100px';
+        wrapper.appendChild(pdfElement);
+        document.body.appendChild(wrapper);
+
         html2pdf().set({
             margin: [10, 10, 10, 10],
             filename: 'Mudassar_Hussain_CV.pdf',
             image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true },
+            html2canvas: { scale: 2, useCORS: true, width: 1100 },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        }).from(element).save().then(function() {
+        }).from(wrapper).save().then(function() {
             downloadBtn.disabled = false;
             downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
+            document.body.removeChild(wrapper);
             showToastManager('✅ CV downloaded!');
         }).catch(function(err) {
             console.error('PDF generation error:', err);
             downloadBtn.disabled = false;
             downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
+            if (document.body.contains(wrapper)) {
+                document.body.removeChild(wrapper);
+            }
             showToastManager('❌ PDF generation failed');
         });
     });

@@ -133,6 +133,86 @@
   gap: 12px;
 }
 
+/* PDF export layout - forces two-column resume layout during download */
+.pdf-layout .cv-container {
+  max-width: 1080px;
+  width: 100%;
+}
+
+.pdf-layout .container {
+  max-width: 1100px;
+  width: auto;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.pdf-layout .cv-body-grid {
+  grid-template-columns: 1fr 1fr !important;
+  gap: 24px;
+}
+
+.pdf-layout .cv-two-columns {
+  grid-template-columns: 1fr 1fr !important;
+}
+
+.pdf-layout .cv-contact-info,
+.pdf-layout .cv-item-header {
+  flex-direction: row !important;
+  justify-content: space-between;
+}
+
+.pdf-layout .cv-contact-info span,
+.pdf-layout .cv-item-header span {
+  white-space: nowrap;
+}
+
+.pdf-layout .cv-section-block,
+.pdf-layout .cv-item {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.pdf-layout .certifications-list,
+.pdf-layout .skills-grid-cv,
+.pdf-layout .cv-projects-grid,
+.pdf-layout .cv-learnings-grid {
+  grid-template-columns: 1fr !important;
+}
+
+.pdf-layout .cv-projects-grid .cv-item,
+.pdf-layout .cv-learnings-grid .cv-item,
+.pdf-layout .cert-item {
+  padding: 10px !important;
+}
+
+.pdf-layout .cv-summary-block {
+  margin-bottom: 18px;
+}
+
+.pdf-layout .cv-section-block h3 {
+  margin-bottom: 10px;
+}
+
+@media print {
+  .cv-body-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .cv-two-columns {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .cv-contact-info,
+  .cv-item-header {
+    flex-direction: row !important;
+  }
+
+  .cv-contact-info span,
+  .cv-item-header span {
+    white-space: nowrap;
+  }
+}
+
 .cv-projects-grid .cv-item {
   margin-bottom: 0;
   padding: 12px;

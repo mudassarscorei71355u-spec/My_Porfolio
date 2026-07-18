@@ -187,6 +187,21 @@
     gap: 8px;
   }
 
+  /* Keep PDF export balanced even on narrow screens */
+  .pdf-layout .cv-body-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .pdf-layout .cv-two-columns {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .pdf-layout .cv-contact-info,
+  .pdf-layout .cv-item-header {
+    flex-direction: row !important;
+    justify-content: space-between;
+  }
+
   .cv-item-header {
     flex-direction: column;
     align-items: flex-start;
