@@ -676,13 +676,15 @@ function setupDownloadCV() {
                 line-height: 1.2;
             }
             #cvExportClone .cv-body-grid {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
+                display: flex;
                 gap: 16px;
                 align-items: start;
                 width: 100%;
+                flex-wrap: wrap;
             }
             #cvExportClone .cv-column {
+                width: 50%;
+                page-break-inside: auto;
                 display: flex;
                 flex-direction: column;
                 gap: 0;
@@ -691,8 +693,8 @@ function setupDownloadCV() {
             #cvExportClone .cv-summary-block {
                 grid-column: 1 / -1;
                 margin-bottom: 10px;
-                break-inside: avoid;
                 page-break-inside: avoid;
+                break-inside: avoid;
             }
             #cvExportClone .cv-summary-block p {
                 margin: 0;
@@ -702,8 +704,8 @@ function setupDownloadCV() {
             }
             #cvExportClone .cv-section-block {
                 margin-bottom: 12px;
-                break-inside: avoid;
                 page-break-inside: avoid;
+                break-inside: avoid;
             }
             #cvExportClone .cv-section-block h3 {
                 font-size: 0.85rem;
@@ -715,8 +717,6 @@ function setupDownloadCV() {
             }
             #cvExportClone .cv-item {
                 margin-bottom: 8px;
-                break-inside: avoid;
-                page-break-inside: avoid;
             }
             #cvExportClone .cv-item-header {
                 display: flex;
@@ -774,6 +774,8 @@ function setupDownloadCV() {
                 display: grid;
                 grid-template-columns: 1fr;
                 gap: 6px;
+                page-break-inside: auto;
+                break-inside: auto;
             }
             #cvExportClone .cv-projects-grid .cv-item {
                 padding: 6px;
@@ -793,6 +795,10 @@ function setupDownloadCV() {
                 display: grid;
                 grid-template-columns: 1fr;
                 gap: 4px;
+                page-break-inside: avoid;
+                break-inside: avoid;
+                page-break-before: always;
+                break-before: page;
             }
             #cvExportClone .certifications-list {
                 display: flex;
@@ -802,8 +808,6 @@ function setupDownloadCV() {
             #cvExportClone .cv-learning-group {
                 margin-bottom: 6px;
                 font-size: 0.7rem;
-                break-inside: avoid;
-                page-break-inside: avoid;
                 color: #cbd5e1;
             }
             #cvExportClone .cv-learning-tag {
@@ -831,6 +835,10 @@ function setupDownloadCV() {
             #cvExportClone .cv-two-columns li {
                 margin-bottom: 2px;
             }
+            #cvExportClone .page-break {
+                page-break-before: always;
+                break-before: page;
+            }
         `;
         
         document.head.appendChild(exportStyleElement);
@@ -839,7 +847,7 @@ function setupDownloadCV() {
         // Wait for rendering, then export
         setTimeout(function() {
             html2pdf().set({
-                margin: [2, 2, 2, 2],
+                margin: [5, 5, 5, 5],
                 filename: 'Mudassar_Hussain_CV.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: {
@@ -849,7 +857,7 @@ function setupDownloadCV() {
                     backgroundColor: '#0f172a'
                 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+                pagebreak: { mode: ['avoid-all', 'css'] }
             }).from(clone).save().then(function() {
                 downloadBtn.disabled = false;
                 downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
@@ -869,7 +877,6 @@ function setupDownloadCV() {
         }, 200);
     });
 }
-
 // Setup page-specific management controls
 function setupPageManagementControls() {
     setupLearningStatsToggle();
