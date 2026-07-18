@@ -468,13 +468,3 @@ window.initTheme = initTheme;
 window.updateThemeIcon = updateThemeIcon;
 window.hidePageLoader = hidePageLoader;
 window.setupPageManagementControls = setupPageManagementControls;
-
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() {
-        initPortfolioApp();
-        window.setTimeout(hidePageLoader, 1800);
-    });
-} else {
-    initPortfolioApp();
-    window.setTimeout(hidePageLoader, 1800);
-}

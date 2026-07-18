@@ -1,5 +1,14 @@
-﻿// main.js compatibility shim.
-// The portfolio bootstrapping and page logic now live in app-bootstrap.js and app-page-logic.js.
-if (typeof window.initPortfolioApp === 'function') {
-    window.initPortfolioApp();
-}
+﻿// main.js - Application entry point
+// Keeps a small startup layer separate from shared app logic.
+
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof window.initPortfolioApp === 'function') {
+        window.initPortfolioApp();
+    }
+
+    window.setTimeout(function() {
+        if (typeof window.hidePageLoader === 'function') {
+            window.hidePageLoader();
+        }
+    }, 1800);
+});
