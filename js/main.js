@@ -585,32 +585,28 @@ function setupDownloadCV() {
     // ------------------------------------------------------------------
     // WHAT WAS STILL WRONG
     // ------------------------------------------------------------------
-    // html2pdf's automatic pagination takes ONE tall screenshot of the
-    // whole CV and slices it into page-height chunks by raw pixel row.
-    // It has no idea that .cv-body-grid is two side-by-side columns. If
-    // column 2 (Projects) renders taller than column 1 (Education/
-    // Skills) — which varies by device/font metrics, hence "only on
-    // mobile" — the slice line lands in the MIDDLE of column 2. Page 2
-    // then shows just the tail end of column 2 with nothing next to it,
-    // which is the "column 2 shifted" symptom. And because that leftover
-    // fragment doesn't span the full width the way a normal full row
-    // does, it also reads as "not centered."
+    // The previous version captured each logical section as ONE image
+    // and then force-fit it onto ONE PDF page by shrinking it
+    // (Math.min(1, availableHMM / naturalHMM)). That's exactly the
+    // "zoom" symptom you're seeing: as soon as content is taller than a
+    // single page, everything (including text) gets scaled down to
+    // squeeze it in, instead of flowing the overflow onto a new page.
     //
-    // FIX: stop slicing a single flat image at all. Capture each logical
-    // page (1: header+summary+education+skills+projects,
-    // 2: Learning Highlights) as its OWN complete image, shrink each one
-    // (if needed) so it always fits within one page's height without
-    // ever cutting through a column, then place each image on its own
-    // PDF page with manually computed, guaranteed-centered coordinates.
+    // FIX: never shrink. Instead, paginate: capture each logical section
+    // as one tall canvas at NATURAL scale, then slice that canvas into
+    // as many full-size, full-width page-height chunks as needed. Since
+    // the two-column grid (.cv-body-grid) is captured as a single flat
+    // image, slicing horizontally automatically keeps both columns
+    // side-by-side on every resulting page — the two-column format is
+    // preserved, it just continues across pages instead of shrinking.
     //
-    // NOTE: earlier versions of this function required separate global
-    // `html2canvas` / `window.jspdf` objects. Not every html2pdf CDN
-    // build exposes those (yours doesn't, which is why the button was
-    // greyed out). This version only needs `html2pdf` itself — it gets
-    // the canvas and jsPDF instance through html2pdf's own worker API
-    // (`.toCanvas()`, `.toPdf()`, `.get('pdf')`), which is always
-    // available since html2pdf bundles both internally regardless of
-    // whether it re-exports them as separate globals.
+    // To avoid cutting a slice through the middle of a CV item/section
+    // (text getting chopped mid-line), we measure the real DOM
+    // (.cv-item, .cv-section-block, .cv-header, .cv-summary-block, etc.)
+    // bounding boxes BEFORE capture and only allow page breaks to land
+    // in the gaps between those elements. If a target break point falls
+    // inside an element, we back up to the start of that element (so it
+    // moves whole onto the next page) rather than slicing through it.
     // ------------------------------------------------------------------
 
     if (typeof html2pdf === 'undefined') {
@@ -624,7 +620,6 @@ function setupDownloadCV() {
         const styleEl = document.createElement('style');
         styleEl.id = EXPORT_STYLE_ID;
         styleEl.textContent = `
-            /* No zoom/scale hacks here anymore — see note below on why. */
             body.cv-export-mode #cvContent {
                 width: 794px !important;
                 max-width: 794px !important;
@@ -854,12 +849,21 @@ function setupDownloadCV() {
         document.head.appendChild(styleEl);
     }
 
-    // A4 page geometry in mm, and the px<->mm relationship implied by
-    // the 794px export width (794px was chosen because at 96dpi that's
-    // exactly the width of an A4 page: 210mm * 96/25.4 ≈ 794px).
+    // A4 page geometry in mm.
     const PAGE_W_MM = 210;
     const PAGE_H_MM = 297;
     const MARGIN_MM = 5;
+
+    // Must match the html2canvas `scale` option used in captureElement,
+    // since forbidden-zone measurements are taken in CSS px and then
+    // converted into canvas-pixel space using this factor.
+    const CAPTURE_SCALE = 3;
+
+    // Elements that must never be sliced through. Add/adjust selectors
+    // here if your markup uses different block-level wrappers.
+    const UNSPLITTABLE_SELECTOR =
+        '.cv-header, .cv-summary-block, .cv-section-block, .cv-item, ' +
+        '.skill-group, .cv-learning-group, .certifications-list';
 
     function nextFrame() {
         return new Promise(function(resolve) {
@@ -869,25 +873,64 @@ function setupDownloadCV() {
         });
     }
 
-    // Captures `el` via html2pdf's own worker chain and returns the
-    // resulting canvas. Using html2pdf().toCanvas() instead of calling
-    // html2canvas directly means we only ever depend on the one library
-    // that's confirmed to be loaded.
+    // Measures every "don't split me" element inside `container` and
+    // returns a sorted, merged list of [topPx, bottomPx] zones in
+    // CANVAS pixel space (i.e. already multiplied by CAPTURE_SCALE),
+    // relative to the top of `container`.
+    function getForbiddenZones(container) {
+        const containerRect = container.getBoundingClientRect();
+        const zones = [];
+        container.querySelectorAll(UNSPLITTABLE_SELECTOR).forEach(function(el) {
+            if (el.offsetParent === null) return; // hidden, skip
+            const r = el.getBoundingClientRect();
+            if (r.height <= 0) return;
+            const top = (r.top - containerRect.top) * CAPTURE_SCALE;
+            const bottom = (r.bottom - containerRect.top) * CAPTURE_SCALE;
+            zones.push([top, bottom]);
+        });
+        zones.sort(function(a, b) { return a[0] - b[0]; });
+        const merged = [];
+        zones.forEach(function(z) {
+            if (merged.length && z[0] <= merged[merged.length - 1][1] + 1) {
+                merged[merged.length - 1][1] = Math.max(merged[merged.length - 1][1], z[1]);
+            } else {
+                merged.push(z.slice());
+            }
+        });
+        return merged;
+    }
+
+    // Given a desired cut position `target` (canvas px) that must be
+    // > minY (the start of the current page's content), returns the
+    // nearest SAFE cut position at or before `target`: either `target`
+    // itself if it doesn't land inside any forbidden zone, or the top
+    // of whichever zone it lands inside (pushing that whole element
+    // onto the next page instead of slicing it). Falls back to
+    // `target` itself only if the offending element already started
+    // exactly at minY (i.e. it's taller than a full page on its own —
+    // rare, but must not infinite-loop).
+    function findSafeCut(target, zones, minY) {
+        for (let i = 0; i < zones.length; i++) {
+            const top = zones[i][0];
+            const bottom = zones[i][1];
+            if (target > top && target < bottom) {
+                if (top > minY) return top;
+                return target; // element itself is taller than one page
+            }
+        }
+        return target;
+    }
+
+    // Captures `el` via html2pdf's own worker chain (avoids depending
+    // on separately-exposed html2canvas/jsPDF globals) and returns the
+    // full-size canvas.
     async function captureElement(el) {
-        // Force a synchronous reflow so any pending layout changes (like
-        // the cv-export-mode width override, or a display toggle on a
-        // sibling) are fully applied before html2canvas reads geometry.
-        void el.offsetHeight;
+        void el.offsetHeight; // force reflow before measuring/capturing
         await nextFrame();
 
-        // No explicit width/height/windowWidth here: #cvContent is
-        // already fixed at 794px on the real DOM (via cv-export-mode),
-        // so html2canvas measures it correctly on its own. Passing a
-        // separately-measured rect risked a stale/early reading, which
-        // is what was causing the cropped/cut-off capture.
         const canvas = await html2pdf().set({
             html2canvas: {
-                scale: 3,
+                scale: CAPTURE_SCALE,
                 useCORS: true,
                 allowTaint: true,
                 backgroundColor: '#0f172a',
@@ -899,37 +942,63 @@ function setupDownloadCV() {
         return canvas;
     }
 
-    // Paints `canvas` onto the CURRENT page of `pdf`, centered both
-    // horizontally and vertically within the printable area. Filling the
-    // printable width exactly and computing x from that width is what
-    // guarantees true centering — no reliance on html2pdf's internal
-    // placement. A solid background rect is painted first so nothing
-    // html2pdf may have already drawn on this page shows through.
-    function paintCanvasOnCurrentPage(pdf, canvas) {
-        pdf.setFillColor(15, 23, 42); // #0f172a
-        pdf.rect(0, 0, PAGE_W_MM, PAGE_H_MM, 'F');
-
+    // Slices `canvas` into as many natural-scale, full-width pages as
+    // needed to hold its full height, breaking only at positions that
+    // are safe according to `zones`. Pages are added to `pdf` at
+    // natural size (no shrinking) — this is what replaces the old
+    // "shrink to fit one page" behavior. `pageTracker` is a small
+    // mutable object ({ used: boolean }) shared across calls so the
+    // very first slice of the whole document reuses the PDF's existing
+    // page 1, while every other slice (including ones from a later
+    // logical section) gets pdf.addPage().
+    function paginateCanvasOntoPdf(pdf, canvas, zones, pageTracker) {
         const availableWMM = PAGE_W_MM - 2 * MARGIN_MM;
         const availableHMM = PAGE_H_MM - 2 * MARGIN_MM;
 
-        // True "contain" fit: scale the image down by whichever axis
-        // needs it more, preserving aspect ratio (no distortion, no
-        // cropping), then center it on both axes. If the content is
-        // short, this fills full width (the common case). If a section
-        // is unusually tall, this shrinks it uniformly instead of
-        // letting it get cut or squashed.
-        const naturalWMM = availableWMM;
-        const naturalHMM = naturalWMM * (canvas.height / canvas.width);
-        const scale = Math.min(1, availableHMM / naturalHMM);
+        // Width-based scale only (uniform, no distortion). Because we
+        // slice by height instead of squashing, every page renders
+        // text at true, full size.
+        const mmPerPx = availableWMM / canvas.width;
+        const pageHeightPx = availableHMM / mmPerPx;
 
-        const imgWMM = naturalWMM * scale;
-        const imgHMM = naturalHMM * scale;
+        let y = 0;
+        while (y < canvas.height - 1) {
+            let targetEnd = Math.min(y + pageHeightPx, canvas.height);
+            if (targetEnd < canvas.height) {
+                const safe = findSafeCut(targetEnd, zones, y);
+                targetEnd = safe > y ? safe : targetEnd;
+            }
+            const sliceHeightPx = Math.max(1, targetEnd - y);
 
-        const x = MARGIN_MM + (availableWMM - imgWMM) / 2;
-        const y = MARGIN_MM + (availableHMM - imgHMM) / 2;
+            const sliceCanvas = document.createElement('canvas');
+            sliceCanvas.width = canvas.width;
+            sliceCanvas.height = Math.ceil(sliceHeightPx);
+            const ctx = sliceCanvas.getContext('2d');
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, sliceCanvas.width, sliceCanvas.height);
+            ctx.drawImage(
+                canvas,
+                0, y, canvas.width, sliceHeightPx,
+                0, 0, canvas.width, sliceHeightPx
+            );
 
-        const imgData = canvas.toDataURL('image/jpeg', 0.98);
-        pdf.addImage(imgData, 'JPEG', x, y, imgWMM, imgHMM);
+            if (pageTracker.used) {
+                pdf.addPage();
+            }
+            pageTracker.used = true;
+
+            pdf.setFillColor(15, 23, 42); // #0f172a
+            pdf.rect(0, 0, PAGE_W_MM, PAGE_H_MM, 'F');
+
+            const imgWMM = availableWMM;
+            const imgHMM = sliceHeightPx * mmPerPx;
+            const imgData = sliceCanvas.toDataURL('image/jpeg', 0.98);
+            // Top-aligned (like a real printed document continuing
+            // across pages), not vertically centered per page.
+            pdf.addImage(imgData, 'JPEG', MARGIN_MM, MARGIN_MM, imgWMM, imgHMM);
+
+            y = targetEnd;
+        }
     }
 
     downloadBtn.addEventListener('click', async function() {
@@ -948,9 +1017,6 @@ function setupDownloadCV() {
         document.body.classList.add('cv-export-mode');
         window.scrollTo(0, 0);
 
-        // Split into logical pages without moving any DOM nodes: find
-        // the element marking the start of page 2 (Learning Highlights),
-        // and toggle visibility of everything before/after it in turn.
         const pageBreakEl = cvContent.querySelector('.page-break, .cv-learning-section-wrapper');
         let page2Root = null;
         if (pageBreakEl) {
@@ -973,15 +1039,8 @@ function setupDownloadCV() {
         try {
             await nextFrame();
 
-            // Get a bare jsPDF instance through html2pdf's own worker
-            // chain. IMPORTANT: we seed this from a trivial 1px scratch
-            // element, NOT the real cvContent — running toPdf() on the
-            // full, un-hidden CV would let html2pdf auto-paginate it by
-            // itself (the exact bug we're fixing), leaving a leftover,
-            // unmasked page behind. The scratch element guarantees
-            // exactly one trivial page to start from; the A4 page size
-            // itself comes from the jsPDF option below, independent of
-            // the scratch element's tiny size.
+            // Seed a bare jsPDF instance via a trivial scratch element
+            // (not the real content — see original notes on why).
             const scratchEl = document.createElement('div');
             scratchEl.style.cssText = 'width:2px;height:2px;background:#0f172a;';
             document.body.appendChild(scratchEl);
@@ -992,32 +1051,34 @@ function setupDownloadCV() {
                 .get('pdf');
             scratchEl.remove();
 
-            // Defensive: make sure we start from exactly one known page.
             while (pdf.getNumberOfPages() > 1) {
                 pdf.deletePage(pdf.getNumberOfPages());
             }
             pdf.setPage(1);
 
+            const pageTracker = { used: false };
+
             if (page2Root) {
-                // --- PAGE 1: everything except page2Root ---
+                // --- SECTION 1: everything except page2Root ---
                 page2Root.style.display = 'none';
                 await nextFrame();
+                let zones = getForbiddenZones(cvContent);
                 let canvas = await captureElement(cvContent);
-                paintCanvasOnCurrentPage(pdf, canvas);
+                paginateCanvasOntoPdf(pdf, canvas, zones, pageTracker);
 
-                // --- PAGE 2: only page2Root ---
+                // --- SECTION 2: only page2Root ---
                 page2Root.style.display = '';
                 Array.prototype.forEach.call(cvContent.children, function(child) {
                     if (child !== page2Root) child.style.display = 'none';
                 });
                 await nextFrame();
+                zones = getForbiddenZones(cvContent);
                 canvas = await captureElement(cvContent);
-                pdf.addPage();
-                paintCanvasOnCurrentPage(pdf, canvas);
+                paginateCanvasOntoPdf(pdf, canvas, zones, pageTracker);
             } else {
-                // No page-break marker found: export as a single page.
+                const zones = getForbiddenZones(cvContent);
                 const canvas = await captureElement(cvContent);
-                paintCanvasOnCurrentPage(pdf, canvas);
+                paginateCanvasOntoPdf(pdf, canvas, zones, pageTracker);
             }
 
             pdf.save('Mudassar_Hussain_CV.pdf');
