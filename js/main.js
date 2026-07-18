@@ -603,275 +603,270 @@ function setupDownloadCV() {
             updateThemeIcon(true);
         }
 
-        const exportStyles = `
-            <style>
-                body {
-                    margin: 0;
-                    background: #0f172a;
-                    color: #f1f5f9;
-                    font-family: Inter, Arial, sans-serif;
-                    line-height: 1.3;
-                }
-                .cv-export-root {
-                    width: 100%;
-                    max-width: 100%;
-                    margin: 0;
-                    padding: 20px;
-                    background: #0f172a;
-                    color: #f1f5f9;
-                }
-                .cv-export-root .cv-container {
-                    width: 100%;
-                    background: #1e293b;
-                    color: #f1f5f9;
-                    border: 1px solid #334155;
-                    border-radius: 16px;
-                    padding: 20px;
-                    box-shadow: none;
-                }
-                .cv-export-root .cv-header {
-                    text-align: center;
-                    border-bottom: 2px solid #60a5fa;
-                    margin-bottom: 14px;
-                    padding-bottom: 12px;
-                }
-                .cv-export-root .cv-header-info {
-                    margin: 0;
-                }
-                .cv-export-root .cv-name {
-                    font-size: 1.4rem;
-                    margin-bottom: 4px;
-                }
-                .cv-export-root .cv-title {
-                    font-size: 0.9rem;
-                    margin-bottom: 8px;
-                }
-                .cv-export-root .cv-contact-info {
-                    display: flex !important;
-                    flex-wrap: wrap !important;
-                    justify-content: center !important;
-                    gap: 10px !important;
-                    font-size: 0.7rem !important;
-                }
-                .cv-export-root .avatar-circle {
-                    width: 100px !important;
-                    height: 100px !important;
-                    margin: 0 auto 8px !important;
-                }
-                .cv-export-root .cv-body-grid {
-                    display: grid !important;
-                    grid-template-columns: 1fr 1fr !important;
-                    gap: 20px !important;
-                    align-items: start;
-                }
-                .cv-export-root .cv-column {
-                    display: flex !important;
-                    flex-direction: column !important;
-                    gap: 0;
-                    min-width: 0;
-                }
-                .cv-export-root .cv-two-columns {
-                    display: grid !important;
-                    grid-template-columns: 1fr 1fr !important;
-                    gap: 12px !important;
-                }
-                .cv-export-root .cv-summary-block {
-                    margin-bottom: 12px;
-                    break-inside: avoid;
-                    page-break-inside: avoid;
-                    grid-column: 1 / -1;
-                }
-                .cv-export-root .cv-summary-block p {
-                    margin: 0;
-                    font-size: 0.8rem;
-                    line-height: 1.3;
-                }
-                .cv-export-root .cv-section-block {
-                    margin-bottom: 14px;
-                    break-inside: avoid;
-                    page-break-inside: avoid;
-                }
-                .cv-export-root .cv-section-block h3 {
-                    font-size: 0.95rem;
-                    margin: 0 0 8px 0;
-                    padding-bottom: 4px;
-                    border-bottom: 2px solid #60a5fa;
-                    color: #60a5fa;
-                }
-                .cv-export-root .cv-item {
-                    margin-bottom: 10px;
-                    break-inside: avoid;
-                    page-break-inside: avoid;
-                }
-                .cv-export-root .cv-item-header {
-                    display: flex !important;
-                    justify-content: space-between !important;
-                    flex-wrap: wrap !important;
-                    gap: 4px !important;
-                    margin-bottom: 2px;
-                }
-                .cv-export-root .cv-item-title {
-                    font-weight: 600;
-                    font-size: 0.85rem;
-                    color: #f1f5f9;
-                }
-                .cv-export-root .cv-item-date {
-                    font-size: 0.7rem;
-                    color: #60a5fa;
-                }
-                .cv-export-root .cv-item-subtitle {
-                    font-size: 0.75rem;
-                    color: #cbd5e1;
-                    margin-top: 2px;
-                }
-                .cv-export-root .cv-item p {
-                    margin: 2px 0 0 0;
-                    font-size: 0.7rem;
-                    color: #94a3b8;
-                    line-height: 1.2;
-                }
-                .cv-export-root .cv-tech-tags {
-                    margin-top: 4px;
-                    background: #1e3a5f !important;
-                    padding: 3px 8px !important;
-                    border-radius: 12px;
-                    font-size: 0.65rem !important;
-                    font-weight: 500;
-                    color: #60a5fa;
-                    display: inline-flex;
-                    flex-wrap: wrap;
-                    gap: 4px;
-                    border: 1px solid #334155;
-                }
-                .cv-export-root .skills-grid-cv {
-                    display: grid !important;
-                    grid-template-columns: 1fr !important;
-                    gap: 6px !important;
-                }
-                .cv-export-root .skill-group {
-                    padding: 4px 0;
-                    border-bottom: 1px solid #334155;
-                    color: #cbd5e1;
-                    font-size: 0.75rem;
-                    line-height: 1.2;
-                }
-                .cv-export-root .cv-projects-grid {
-                    display: grid !important;
-                    grid-template-columns: 1fr !important;
-                    gap: 8px !important;
-                }
-                .cv-export-root .cv-projects-grid .cv-item {
-                    padding: 8px !important;
-                    background: #0f172a !important;
-                    border-radius: 8px !important;
-                    border: 1px solid #334155 !important;
-                    margin-bottom: 0;
-                }
-                .cv-export-root .cv-projects-grid .cv-item p {
-                    display: -webkit-box;
-                    -webkit-line-clamp: 2;
-                    -webkit-box-orient: vertical;
-                    overflow: hidden;
-                }
-                .cv-export-root .cv-learnings-grid {
-                    display: grid !important;
-                    grid-template-columns: 1fr !important;
-                    gap: 6px !important;
-                }
-                .cv-export-root .certifications-list {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                }
-                .cv-export-root .cv-learning-group {
-                    margin-bottom: 8px;
-                    font-size: 0.75rem;
-                    break-inside: avoid;
-                    page-break-inside: avoid;
-                }
-                .cv-export-root .cv-learning-tag {
-                    display: inline-block;
-                    background: #1e3a5f;
-                    color: #60a5fa;
-                    padding: 2px 8px;
-                    border-radius: 10px;
-                    font-size: 0.65rem;
-                    margin-right: 4px;
-                    margin-bottom: 2px;
-                }
-            </style>
+        // Clone the CV element
+        const clone = element.cloneNode(true);
+        clone.id = 'cvExportClone';
+        
+        // Create comprehensive export styles
+        const exportStyleElement = document.createElement('style');
+        exportStyleElement.textContent = `
+            #cvExportClone {
+                width: 100%;
+                max-width: 100%;
+                margin: 0;
+                padding: 16px;
+                background: #0f172a;
+                color: #f1f5f9;
+                font-family: Inter, Arial, sans-serif;
+                line-height: 1.2;
+            }
+            #cvExportClone * {
+                margin: 0;
+                padding: 0;
+            }
+            #cvExportClone .cv-container {
+                width: 100%;
+                background: #1e293b;
+                color: #f1f5f9;
+                border: 1px solid #334155;
+                border-radius: 14px;
+                padding: 18px;
+                box-shadow: none;
+            }
+            #cvExportClone .cv-header {
+                text-align: center;
+                border-bottom: 2px solid #60a5fa;
+                margin-bottom: 12px;
+                padding-bottom: 10px;
+            }
+            #cvExportClone .cv-header-info {
+                margin: 0;
+            }
+            #cvExportClone .avatar-circle {
+                width: 90px !important;
+                height: 90px !important;
+                margin: 0 auto 6px !important;
+                border-radius: 50%;
+                overflow: hidden;
+            }
+            #cvExportClone .avatar-circle img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+            #cvExportClone .cv-name {
+                font-size: 1.2rem;
+                font-weight: 700;
+                margin-bottom: 2px;
+                color: #f1f5f9;
+            }
+            #cvExportClone .cv-title {
+                font-size: 0.8rem;
+                margin-bottom: 6px;
+                color: #60a5fa;
+                font-weight: 500;
+            }
+            #cvExportClone .cv-contact-info {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 8px;
+                font-size: 0.65rem;
+                color: #94a3b8;
+                line-height: 1.2;
+            }
+            #cvExportClone .cv-body-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+                align-items: start;
+                width: 100%;
+            }
+            #cvExportClone .cv-column {
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                min-width: 0;
+            }
+            #cvExportClone .cv-summary-block {
+                grid-column: 1 / -1;
+                margin-bottom: 10px;
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            #cvExportClone .cv-summary-block p {
+                margin: 0;
+                font-size: 0.7rem;
+                line-height: 1.3;
+                color: #cbd5e1;
+            }
+            #cvExportClone .cv-section-block {
+                margin-bottom: 12px;
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            #cvExportClone .cv-section-block h3 {
+                font-size: 0.85rem;
+                margin: 0 0 6px 0;
+                padding-bottom: 3px;
+                border-bottom: 2px solid #60a5fa;
+                color: #60a5fa;
+                font-weight: 600;
+            }
+            #cvExportClone .cv-item {
+                margin-bottom: 8px;
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            #cvExportClone .cv-item-header {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 4px;
+                margin-bottom: 1px;
+            }
+            #cvExportClone .cv-item-title {
+                font-weight: 600;
+                font-size: 0.75rem;
+                color: #f1f5f9;
+            }
+            #cvExportClone .cv-item-date {
+                font-size: 0.65rem;
+                color: #60a5fa;
+            }
+            #cvExportClone .cv-item-subtitle {
+                font-size: 0.7rem;
+                color: #cbd5e1;
+                margin-top: 1px;
+            }
+            #cvExportClone .cv-item p {
+                margin: 2px 0 0 0;
+                font-size: 0.65rem;
+                color: #94a3b8;
+                line-height: 1.2;
+            }
+            #cvExportClone .cv-tech-tags {
+                margin-top: 3px;
+                background: #1e3a5f;
+                padding: 2px 6px;
+                border-radius: 10px;
+                font-size: 0.6rem;
+                font-weight: 500;
+                color: #60a5fa;
+                display: inline-flex;
+                flex-wrap: wrap;
+                gap: 3px;
+                border: 1px solid #334155;
+            }
+            #cvExportClone .skills-grid-cv {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 4px;
+            }
+            #cvExportClone .skill-group {
+                padding: 3px 0;
+                border-bottom: 1px solid #334155;
+                color: #cbd5e1;
+                font-size: 0.7rem;
+                line-height: 1.2;
+            }
+            #cvExportClone .cv-projects-grid {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 6px;
+            }
+            #cvExportClone .cv-projects-grid .cv-item {
+                padding: 6px;
+                background: #0f172a;
+                border-radius: 6px;
+                border: 1px solid #334155;
+                margin-bottom: 0;
+            }
+            #cvExportClone .cv-projects-grid .cv-item p {
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                font-size: 0.6rem;
+            }
+            #cvExportClone .cv-learnings-grid {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 4px;
+            }
+            #cvExportClone .certifications-list {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+            }
+            #cvExportClone .cv-learning-group {
+                margin-bottom: 6px;
+                font-size: 0.7rem;
+                break-inside: avoid;
+                page-break-inside: avoid;
+                color: #cbd5e1;
+            }
+            #cvExportClone .cv-learning-tag {
+                display: inline-block;
+                background: #1e3a5f;
+                color: #60a5fa;
+                padding: 2px 6px;
+                border-radius: 8px;
+                font-size: 0.6rem;
+                margin-right: 3px;
+                margin-bottom: 2px;
+                border: 1px solid #334155;
+            }
+            #cvExportClone .cv-two-columns {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            #cvExportClone .cv-two-columns ul {
+                padding-left: 16px;
+                margin-top: 3px;
+                color: #cbd5e1;
+                font-size: 0.7rem;
+            }
+            #cvExportClone .cv-two-columns li {
+                margin-bottom: 2px;
+            }
         `;
+        
+        document.head.appendChild(exportStyleElement);
+        document.body.appendChild(clone);
 
-        const baseCssUrl = new URL('../css/style.css', window.location.href).href;
-        const exportHtml = `
-            <!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="utf-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <link rel="stylesheet" href="${baseCssUrl}">
-                ${exportStyles}
-            </head>
-            <body class="dark">
-                <div class="cv-export-root">${element.innerHTML}</div>
-            </body>
-            </html>
-        `;
-
-        const frame = document.createElement('iframe');
-        frame.style.position = 'fixed';
-        frame.style.left = '-9999px';
-        frame.style.top = '0';
-        frame.style.width = '1000px';
-        frame.style.height = '2000px';
-        frame.style.border = '0';
-        frame.srcdoc = exportHtml;
-        document.body.appendChild(frame);
-
-        frame.onload = function() {
-            setTimeout(function() {
-                const frameDoc = frame.contentDocument || frame.contentWindow.document;
-                const exportRoot = frameDoc.querySelector('.cv-export-root');
-
-                if (!exportRoot) {
-                    downloadBtn.disabled = false;
-                    downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
-                    document.body.removeChild(frame);
-                    showToastManager('❌ PDF generation failed');
-                    return;
+        // Wait for rendering, then export
+        setTimeout(function() {
+            html2pdf().set({
+                margin: [2, 2, 2, 2],
+                filename: 'Mudassar_Hussain_CV.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: {
+                    scale: 3,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: '#0f172a'
+                },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+            }).from(clone).save().then(function() {
+                downloadBtn.disabled = false;
+                downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
+                document.body.removeChild(clone);
+                document.head.removeChild(exportStyleElement);
+                showToastManager('✅ CV downloaded!');
+            }).catch(function(err) {
+                console.error('PDF generation error:', err);
+                downloadBtn.disabled = false;
+                downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
+                if (document.body.contains(clone)) {
+                    document.body.removeChild(clone);
                 }
-
-                html2pdf().set({
-                    margin: [3, 3, 3, 3],
-                    filename: 'Mudassar_Hussain_CV.pdf',
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: {
-                        scale: 2,
-                        useCORS: true,
-                        width: 1000,
-                        windowWidth: 1000,
-                        scrollX: 0,
-                        scrollY: 0
-                    },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-                }).from(exportRoot).save().then(function() {
-                    downloadBtn.disabled = false;
-                    downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
-                    if (document.body.contains(frame)) {
-                        document.body.removeChild(frame);
-                    }
-                    showToastManager('✅ CV downloaded!');
-                }).catch(function(err) {
-                    console.error('PDF generation error:', err);
-                    downloadBtn.disabled = false;
-                    downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
-                    if (document.body.contains(frame)) {
-                        document.body.removeChild(frame);
-                    }
-                    showToastManager('❌ PDF generation failed');
-                });
-            }, 800);
-        };
+                document.head.removeChild(exportStyleElement);
+                showToastManager('❌ PDF generation failed');
+            });
+        }, 200);
     });
 }
 
