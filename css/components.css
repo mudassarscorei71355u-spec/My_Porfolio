@@ -10,7 +10,7 @@
   border-radius: 20px;
   padding: 20px;
   border: 1px solid var(--border-light);
-  transition: all 0.3s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base), background-color var(--transition-base);
   box-shadow: 0 2px 8px var(--shadow);
 }
 
@@ -239,7 +239,7 @@
   overflow: hidden;
   border: 1px solid var(--border-light);
   box-shadow: 0 2px 8px var(--shadow);
-  transition: all 0.3s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base), background-color var(--transition-base);
 }
 
 .course-card.completed {

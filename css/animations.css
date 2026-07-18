@@ -1,0 +1,108 @@
+:root {
+  --transition-fast: 180ms ease;
+  --transition-base: 320ms cubic-bezier(.22,1,.36,1);
+  --transition-slow: 600ms cubic-bezier(.22,1,.36,1);
+}
+
+body {
+  opacity: 0;
+  animation: fadeInBody 0.7s ease forwards;
+}
+
+body.ready {
+  opacity: 1;
+}
+
+@keyframes fadeInBody {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+html { scroll-behavior: smooth; }
+
+section,
+.info-card,
+.project-card,
+.course-card,
+.stat-card,
+.btn,
+.skill-tag,
+.contact-item,
+.nav-links a,
+.theme-toggle,
+.mobile-menu-btn {
+  transition: transform var(--transition-base), background-color var(--transition-base), border-color var(--transition-base), color var(--transition-base), box-shadow var(--transition-base), opacity var(--transition-base);
+}
+
+section {
+  animation: revealSection 0.8s ease both;
+}
+
+@keyframes revealSection {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-content,
+.hero-avatar,
+.info-card,
+.project-card,
+.course-card {
+  animation: floatUp 0.9s ease both;
+}
+
+@keyframes floatUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 0.999; transform: translateY(0); }
+}
+
+.project-card:hover,
+.course-card:hover,
+.info-card:hover,
+.skill-tag:hover,
+.btn:hover,
+.theme-toggle:hover,
+.mobile-menu-btn:hover {
+  transform: translateY(-4px) scale(1.01);
+}
+
+.loading-shimmer {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(90deg, var(--bg-card) 0%, var(--border-light) 50%, var(--bg-card) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s linear infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.page-transition {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: pageTransitionIn 0.5s ease forwards;
+}
+
+@keyframes pageTransitionIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.7s ease both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

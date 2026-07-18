@@ -9,6 +9,31 @@
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
+  <div id="pageLoader" class="page-loader" aria-hidden="true">
+    <div class="brand-loader-shell">
+      <div class="brand-loader-ring"></div>
+      <svg class="brand-loader-logo" viewBox="0 0 260 90" xmlns="http://www.w3.org/2000/svg" aria-label="Mudassar Hussain logo">
+        <defs>
+          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        <rect width="260" height="90" rx="14" fill="rgba(15, 23, 42, 0.6)" stroke="#60a5fa" stroke-width="2"/>
+        <path d="M28 45L45 27" stroke="#60a5fa" stroke-width="5.5" stroke-linecap="round" filter="url(#glow)"/>
+        <path d="M28 45L45 63" stroke="#60a5fa" stroke-width="5.5" stroke-linecap="round" filter="url(#glow)"/>
+        <path d="M72 22L62 68" stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round" filter="url(#glow)"/>
+        <path d="M90 27L107 45" stroke="#60a5fa" stroke-width="5.5" stroke-linecap="round" filter="url(#glow)"/>
+        <path d="M90 63L107 45" stroke="#60a5fa" stroke-width="5.5" stroke-linecap="round" filter="url(#glow)"/>
+        <text x="130" y="56" font-family="Poppins, Arial, sans-serif" font-size="32" font-weight="700" fill="#ffffff" filter="url(#glow)">MH</text>
+        <rect class="brand-loader-bar" x="185" y="32" width="5" height="28" rx="2" fill="#60a5fa" filter="url(#glow)"/>
+      </svg>
+    </div>
+    <p class="brand-loader-text">Loading Portfolio</p>
+  </div>
   <header>
     <div class="container nav-container">
       <div class="logo-svg">
@@ -186,6 +211,8 @@
   <script src="../js/projects-manager.js"></script>
   <script src="../js/file-importer.js"></script>
   <script src="../js/data-loader.js"></script>
+  <script src="../js/app-page-logic.js"></script>
+  <script src="../js/app-bootstrap.js"></script>
   <script src="../js/main.js"></script>
 </body>
 </html>
