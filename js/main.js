@@ -605,13 +605,19 @@ function setupDownloadCV() {
 
         const exportStyles = `
             <style>
-                .cv-export-root {
-                    width: 1100px;
-                    max-width: 1100px;
-                    padding: 0;
+                body {
+                    margin: 0;
                     background: #0f172a;
                     color: #f1f5f9;
                     font-family: Inter, Arial, sans-serif;
+                }
+                .cv-export-root {
+                    width: 1100px;
+                    max-width: 1100px;
+                    margin: 0 auto;
+                    padding: 24px;
+                    background: #0f172a;
+                    color: #f1f5f9;
                 }
                 .cv-export-root .cv-container {
                     width: 100%;
@@ -702,50 +708,76 @@ function setupDownloadCV() {
             </style>
         `;
 
-        const wrapper = document.createElement('div');
-        wrapper.style.position = 'fixed';
-        wrapper.style.left = '-9999px';
-        wrapper.style.top = '0';
-        wrapper.style.width = '1100px';
-        wrapper.style.maxWidth = '1100px';
-        wrapper.style.background = '#0f172a';
-        wrapper.style.padding = '0';
-        wrapper.style.zIndex = '0';
-        wrapper.innerHTML = exportStyles + element.outerHTML;
-        wrapper.className = 'cv-export-root';
-        document.body.appendChild(wrapper);
+        const baseCssUrl = new URL('../css/style.css', window.location.href).href;
+        const exportHtml = `
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <link rel="stylesheet" href="${baseCssUrl}">
+                ${exportStyles}
+            </head>
+            <body class="dark">
+                <div class="cv-export-root">${element.innerHTML}</div>
+            </body>
+            </html>
+        `;
 
-        setTimeout(function() {
-            html2pdf().set({
-                margin: [8, 8, 8, 8],
-                filename: 'Mudassar_Hussain_CV.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: {
-                    scale: 3,
-                    useCORS: true,
-                    width: 1100,
-                    windowWidth: 1400,
-                    scrollX: 0,
-                    scrollY: 0
-                },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            }).from(wrapper).save().then(function() {
-                downloadBtn.disabled = false;
-                downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
-                if (document.body.contains(wrapper)) {
-                    document.body.removeChild(wrapper);
+        const frame = document.createElement('iframe');
+        frame.style.position = 'fixed';
+        frame.style.left = '-9999px';
+        frame.style.top = '0';
+        frame.style.width = '1200px';
+        frame.style.height = '1800px';
+        frame.style.border = '0';
+        frame.srcdoc = exportHtml;
+        document.body.appendChild(frame);
+
+        frame.onload = function() {
+            setTimeout(function() {
+                const frameDoc = frame.contentDocument || frame.contentWindow.document;
+                const exportRoot = frameDoc.querySelector('.cv-export-root');
+
+                if (!exportRoot) {
+                    downloadBtn.disabled = false;
+                    downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
+                    document.body.removeChild(frame);
+                    showToastManager('❌ PDF generation failed');
+                    return;
                 }
-                showToastManager('✅ CV downloaded!');
-            }).catch(function(err) {
-                console.error('PDF generation error:', err);
-                downloadBtn.disabled = false;
-                downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
-                if (document.body.contains(wrapper)) {
-                    document.body.removeChild(wrapper);
-                }
-                showToastManager('❌ PDF generation failed');
-            });
-        }, 120);
+
+                html2pdf().set({
+                    margin: [8, 8, 8, 8],
+                    filename: 'Mudassar_Hussain_CV.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: {
+                        scale: 3,
+                        useCORS: true,
+                        width: 1100,
+                        windowWidth: 1400,
+                        scrollX: 0,
+                        scrollY: 0
+                    },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                }).from(exportRoot).save().then(function() {
+                    downloadBtn.disabled = false;
+                    downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
+                    if (document.body.contains(frame)) {
+                        document.body.removeChild(frame);
+                    }
+                    showToastManager('✅ CV downloaded!');
+                }).catch(function(err) {
+                    console.error('PDF generation error:', err);
+                    downloadBtn.disabled = false;
+                    downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF';
+                    if (document.body.contains(frame)) {
+                        document.body.removeChild(frame);
+                    }
+                    showToastManager('❌ PDF generation failed');
+                });
+            }, 800);
+        };
     });
 }
 
