@@ -10,5 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (typeof window.hidePageLoader === 'function') {
             window.hidePageLoader();
         }
+        window.setTimeout(function() {
+            window.dispatchEvent(new Event('portfolio:ready'));
+        }, 450);
     }, 1800);
 });
