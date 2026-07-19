@@ -20,6 +20,14 @@ function saveLearnings(learnings) {
     } catch (e) {
         console.log('Error saving learnings');
     }
+
+    if (typeof persistPortfolioTextFiles === 'function' && portfolioPersistenceEnabled) {
+        try {
+            persistPortfolioTextFiles();
+        } catch (e) {
+            console.warn('Error exporting learnings to txt files:', e);
+        }
+    }
 }
 
 // Get skills
@@ -116,7 +124,7 @@ function toggleLearningCompleteManager(learningId) {
 }
 
 // Delete learning
-function deleteLearningManager(learningId) {
+function deleteLearningRecord(learningId) {
     let learnings = getAllLearnings() || [];
     const learning = learnings.find(l => l.id === learningId);
     learnings = learnings.filter(l => l.id !== learningId);
@@ -272,7 +280,7 @@ function toggleLearningManager(id) {
 
 function deleteLearningManager(id) {
     if (confirm('Are you sure you want to delete this learning?')) {
-        const result = deleteLearningManager(id);
+        const result = deleteLearningRecord(id);
         showToastManager(result.message);
         if (result.success) {
             renderLearningsGrid('coursesGrid');

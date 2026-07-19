@@ -20,6 +20,14 @@ function saveProjects(projects) {
     } catch (e) {
         console.log('Error saving projects');
     }
+
+    if (typeof persistPortfolioTextFiles === 'function' && portfolioPersistenceEnabled) {
+        try {
+            persistPortfolioTextFiles();
+        } catch (e) {
+            console.warn('Error exporting projects to txt files:', e);
+        }
+    }
 }
 
 // Add new project

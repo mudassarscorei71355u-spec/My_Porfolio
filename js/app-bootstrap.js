@@ -63,6 +63,10 @@ async function initPortfolioApp() {
         updateHomepageForms();
     }
 
+    if (typeof enablePortfolioTextPersistence === 'function') {
+        enablePortfolioTextPersistence();
+    }
+
     console.log('✅ Portfolio App Ready!');
     console.log('📊 Current state:');
     console.log('  - Learnings:', (getAllLearnings() || []).length);

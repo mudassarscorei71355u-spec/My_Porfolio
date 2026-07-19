@@ -140,6 +140,99 @@ function getFallbackText(fileName) {
     return '';
 }
 
+let portfolioPersistenceEnabled = false;
+
+function enablePortfolioTextPersistence() {
+    portfolioPersistenceEnabled = true;
+}
+
+function serializeLearningsToText(learnings) {
+    const items = Array.isArray(learnings) ? learnings : [];
+    const grouped = {};
+
+    items.forEach((learning) => {
+        const groupName = learning.roadmapGroup || 'Learning Roadmap';
+        const subgroup = learning.roadmapSubgroup || '';
+        if (!grouped[groupName]) grouped[groupName] = {};
+        if (!grouped[groupName][subgroup]) grouped[groupName][subgroup] = [];
+        grouped[groupName][subgroup].push(learning);
+    });
+
+    const lines = ['# 📚 Learning Roadmap', ''];
+    Object.entries(grouped).forEach(([groupName, subgroups]) => {
+        lines.push(`## ${groupName}`);
+        Object.entries(subgroups).forEach(([subgroup, entries]) => {
+            if (subgroup) {
+                lines.push(`### ${subgroup}`);
+            }
+            entries.forEach((learning) => {
+                lines.push(`- ${learning.name || 'Untitled Learning'}`);
+                lines.push(`  Status: ${learning.completed ? 'completed' : 'in-progress'}`);
+                if (learning.issuer) lines.push(`  Issuer: ${learning.issuer}`);
+                if (learning.skill) lines.push(`  Skill: ${learning.skill}`);
+                if (learning.category) lines.push(`  Category: ${learning.category}`);
+                lines.push('');
+            });
+        });
+        lines.push('');
+    });
+
+    return lines.join('\n').trim() + '\n';
+}
+
+function serializeProjectsToText(projects) {
+    const items = Array.isArray(projects) ? projects : [];
+    const lines = ['PROJECTS', ''];
+
+    items.forEach((project, index) => {
+        lines.push(`${index + 1}. ${project.name || 'Untitled Project'}`);
+        lines.push(`Status: ${project.status || 'not-started'}`);
+        if (Array.isArray(project.tech) && project.tech.length) {
+            lines.push(`Tech: ${project.tech.join(', ')}`);
+        }
+        if (project.desc) {
+            lines.push(`Description: ${project.desc}`);
+        }
+        lines.push('');
+    });
+
+    return lines.join('\n').trim() + '\n';
+}
+
+function downloadTextFile(fileName, content) {
+    try {
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch (error) {
+        console.warn('Unable to download', fileName, error);
+    }
+}
+
+function persistPortfolioTextFiles() {
+    if (!portfolioPersistenceEnabled || typeof document === 'undefined') {
+        return;
+    }
+
+    try {
+        const learnings = getAllLearnings() || [];
+        const projects = getAllProjects() || [];
+        const learningText = serializeLearningsToText(learnings);
+        const projectText = serializeProjectsToText(projects);
+
+        downloadTextFile('all_learnings.txt', learningText);
+        downloadTextFile('all_projects.txt', projectText);
+    } catch (error) {
+        console.warn('Unable to persist portfolio data to text files:', error);
+    }
+}
+
 /**
  * Fetch a text file, trying multiple URL candidates for GitHub Pages compatibility.
  */
