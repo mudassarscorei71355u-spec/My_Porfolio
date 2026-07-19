@@ -199,24 +199,8 @@ function serializeProjectsToText(projects) {
     return lines.join('\n').trim() + '\n';
 }
 
-function downloadTextFile(fileName, content) {
-    try {
-        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-    } catch (error) {
-        console.warn('Unable to download', fileName, error);
-    }
-}
-
 function persistPortfolioTextFiles() {
-    if (!portfolioPersistenceEnabled || typeof document === 'undefined') {
+    if (!portfolioPersistenceEnabled || typeof localStorage === 'undefined') {
         return;
     }
 
@@ -226,10 +210,42 @@ function persistPortfolioTextFiles() {
         const learningText = serializeLearningsToText(learnings);
         const projectText = serializeProjectsToText(projects);
 
-        downloadTextFile('all_learnings.txt', learningText);
-        downloadTextFile('all_projects.txt', projectText);
+        localStorage.setItem('portfolio_text_snapshot_learnings', learningText);
+        localStorage.setItem('portfolio_text_snapshot_projects', projectText);
+        window.__portfolioTextSnapshot = {
+            learnings: learningText,
+            projects: projectText
+        };
     } catch (error) {
-        console.warn('Unable to persist portfolio data to text files:', error);
+        console.warn('Unable to persist portfolio data snapshots:', error);
+    }
+}
+
+function exportPortfolioTextFiles() {
+    try {
+        const learningText = localStorage.getItem('portfolio_text_snapshot_learnings') || serializeLearningsToText(getAllLearnings() || []);
+        const projectText = localStorage.getItem('portfolio_text_snapshot_projects') || serializeProjectsToText(getAllProjects() || []);
+        const blob = new Blob([learningText], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'all_learnings.txt';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+
+        const projectBlob = new Blob([projectText], { type: 'text/plain;charset=utf-8' });
+        const projectUrl = URL.createObjectURL(projectBlob);
+        const projectLink = document.createElement('a');
+        projectLink.href = projectUrl;
+        projectLink.download = 'all_projects.txt';
+        document.body.appendChild(projectLink);
+        projectLink.click();
+        document.body.removeChild(projectLink);
+        URL.revokeObjectURL(projectUrl);
+    } catch (error) {
+        console.warn('Unable to export portfolio text files:', error);
     }
 }
 
